@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
 /**
- * Description: 微信api交互接口
- * Author: <a href="https://github.com/zongzibinbin">abin</a>
- * Date: 2023-03-19
+ * @Author: sixcolor
+ * @Date: 2024-02-14 18:22
+ * @Description: 微信api交互接口
  */
 @Slf4j
 @AllArgsConstructor
@@ -27,6 +27,14 @@ import org.springframework.web.servlet.view.RedirectView;
 public class WxPortalController {
     @Autowired
     private WxMpService wxMpService;
+
+    /**
+     * 用于测试生成二维码
+     *
+     * @param code 编码
+     * @return String
+     * @throws WxErrorException 微信错误异常
+     */
     @GetMapping(value = "getTest")
     public String getQrCode(@RequestParam int code) throws WxErrorException {
         WxMpQrCodeTicket wxMpQrCodeTicket = wxMpService.getQrcodeService().qrCodeCreateTmpTicket(code, 10000);
@@ -38,7 +46,6 @@ public class WxPortalController {
     private final WxMpService wxService;
     private final WxMpMessageRouter messageRouter;
     //private final WxMsgService wxMsgService;
-
 
 
     @GetMapping(produces = "text/plain;charset=utf-8")

@@ -1,8 +1,10 @@
 package com.yan.yanchat.common.websocket;
 
+import cn.hutool.extra.spring.SpringUtil;
 import cn.hutool.json.JSONUtil;
 import com.yan.yanchat.common.websocket.domain.enums.WSReqTypeEnum;
 import com.yan.yanchat.common.websocket.domain.vo.req.WSBaseReq;
+import com.yan.yanchat.common.websocket.service.WebSocketService;
 import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -20,6 +22,15 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Sharable
 public class NettyWebSocketServerHandler extends SimpleChannelInboundHandler<TextWebSocketFrame> {
+
+
+    private WebSocketService webSocketService;
+
+    @Override
+    public void channelActive(ChannelHandlerContext ctx) throws Exception {
+        webSocketService = SpringUtil.getBean(WebSocketService.class);
+        webSocketService.connect(ctx.channel());
+    }
 
     @Override
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
@@ -41,6 +52,7 @@ public class NettyWebSocketServerHandler extends SimpleChannelInboundHandler<Tex
         WSBaseReq wsBaseReq = JSONUtil.toBean(text, WSBaseReq.class);
         switch (WSReqTypeEnum.of(wsBaseReq.getType())) {
             case LOGIN:
+                webSocketService.handleLoginReq(ctx.channel());
                 log.info("请求二维码");
                 ctx.channel().writeAndFlush(new TextWebSocketFrame("success"));
                 break;

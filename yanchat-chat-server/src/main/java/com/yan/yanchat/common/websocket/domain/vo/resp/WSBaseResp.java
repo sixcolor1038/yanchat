@@ -1,6 +1,8 @@
 package com.yan.yanchat.common.websocket.domain.vo.resp;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * @Author: sixcolor
@@ -8,6 +10,8 @@ import lombok.Data;
  * @Description:
  */
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class WSBaseResp<T> {
     /**
      * @see com.yan.yanchat.common.websocket.domain.enums.WSRespTypeEnum

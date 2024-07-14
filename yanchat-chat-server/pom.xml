@@ -17,7 +17,7 @@
             <artifactId>yanchat-common-starter</artifactId>
         </dependency>
 
-       <!-- 代码生成器-->
+        <!-- 代码生成器-->
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-generator</artifactId>
@@ -33,9 +33,14 @@
         <dependency>
             <groupId>com.github.binarywang</groupId>
             <artifactId>weixin-java-mp</artifactId>
-            <version>4.4.0 </version>
+            <version>4.4.0</version>
         </dependency>
 
+        <!---->
+        <dependency>
+            <groupId>com.github.ben-manes.caffeine</groupId>
+            <artifactId>caffeine</artifactId>
+        </dependency>
     </dependencies>
 
 </project>
