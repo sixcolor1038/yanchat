@@ -5,6 +5,7 @@ import cn.hutool.json.JSONUtil;
 import com.yan.yanchat.common.websocket.domain.enums.WSReqTypeEnum;
 import com.yan.yanchat.common.websocket.domain.vo.req.WSBaseReq;
 import com.yan.yanchat.common.websocket.service.WebSocketService;
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -32,6 +33,17 @@ public class NettyWebSocketServerHandler extends SimpleChannelInboundHandler<Tex
         webSocketService.connect(ctx.channel());
     }
 
+    /**
+     * 用户主动下线
+     *
+     * @param ctx
+     * @throws Exception
+     */
+    @Override
+    public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+        userOffLine(ctx.channel());
+    }
+
     @Override
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
         if (evt instanceof WebSocketServerProtocolHandler.HandshakeComplete) {
@@ -40,10 +52,20 @@ public class NettyWebSocketServerHandler extends SimpleChannelInboundHandler<Tex
             IdleStateEvent event = (IdleStateEvent) evt;
             if (event.state() == IdleState.READER_IDLE) {
                 log.info("读空闲");
-                //用户下线
-                ctx.channel().close();
+                userOffLine(ctx.channel());
             }
         }
+    }
+
+    /**
+     * 用户下线统一处理
+     *
+     * @param channel
+     */
+    private void userOffLine(Channel channel) {
+        webSocketService.remove(channel);
+        //用户下线
+        channel.close();
     }
 
     @Override
@@ -52,6 +74,7 @@ public class NettyWebSocketServerHandler extends SimpleChannelInboundHandler<Tex
         WSBaseReq wsBaseReq = JSONUtil.toBean(text, WSBaseReq.class);
         switch (WSReqTypeEnum.of(wsBaseReq.getType())) {
             case LOGIN:
+                //登录逻辑
                 webSocketService.handleLoginReq(ctx.channel());
                 log.info("请求二维码");
                 ctx.channel().writeAndFlush(new TextWebSocketFrame("success"));

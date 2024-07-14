@@ -1,5 +1,6 @@
 package com.yan.yanchat.common.user.controller;
 
+import com.yan.yanchat.common.user.service.WXMsgService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.bean.WxOAuth2UserInfo;
@@ -12,6 +13,7 @@ import me.chanjar.weixin.mp.bean.message.WxMpXmlOutMessage;
 import me.chanjar.weixin.mp.bean.result.WxMpQrCodeTicket;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
@@ -27,6 +29,12 @@ import org.springframework.web.servlet.view.RedirectView;
 public class WxPortalController {
     @Autowired
     private WxMpService wxMpService;
+
+    @Autowired
+    private WXMsgService wxMsgService;
+
+    @Value("${wx.mp.callback}")
+    private String callback;
 
     /**
      * 用于测试生成二维码
@@ -71,19 +79,12 @@ public class WxPortalController {
     @GetMapping("/callBack")
     public RedirectView callBack(@RequestParam String code) throws WxErrorException {
         WxOAuth2AccessToken accessToken = wxMpService.getOAuth2Service().getAccessToken(code);
-        WxOAuth2UserInfo info = wxMpService.getOAuth2Service().getUserInfo(accessToken, "zh_CN");
-        System.out.println(info);
-        /*try {
-            WxOAuth2AccessToken accessToken = wxService.getOAuth2Service().getAccessToken(code);
-            WxOAuth2UserInfo userInfo = wxService.getOAuth2Service().getUserInfo(accessToken, "zh_CN");
-            wxMsgService.authorize(userInfo);
-        } catch (Exception e) {
-            log.error("callBack error", e);
-        }
+        WxOAuth2UserInfo userInfo = wxMpService.getOAuth2Service().getUserInfo(accessToken, "zh_CN");
+        System.out.println(userInfo);
+        wxMsgService.authorize(userInfo);
         RedirectView redirectView = new RedirectView();
-        redirectView.setUrl("https://mp.weixin.qq.com/s/m1SRsBG96kLJW5mPe4AVGA");
-        return redirectView;*/
-        return null;
+        redirectView.setUrl(callback);
+        return redirectView;
     }
 
     @PostMapping(produces = "application/xml; charset=UTF-8")

@@ -11,4 +11,6 @@ public interface WebSocketService {
     void connect(Channel channel);
 
     void handleLoginReq(Channel channel);
+
+    void remove(Channel channel);
 }
