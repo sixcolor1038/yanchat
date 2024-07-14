@@ -6,6 +6,7 @@ import com.yan.yanchat.common.user.service.UserService;
 import com.yan.yanchat.common.user.service.WXMsgService;
 import com.yan.yanchat.common.user.service.adapter.TextBuilder;
 import com.yan.yanchat.common.user.service.adapter.UserAdapter;
+import com.yan.yanchat.common.websocket.service.WebSocketService;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.bean.WxOAuth2UserInfo;
 import me.chanjar.weixin.mp.api.WxMpService;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import java.net.URLEncoder;
 import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @Author: sixcolor
@@ -29,6 +31,10 @@ import java.util.Objects;
 @Slf4j
 public class WXMsgServiceImpl implements WXMsgService {
 
+    /**
+     * openid和登录code关系map
+     */
+    private static final ConcurrentHashMap<String, Integer> WAIT_AUTHORIZE_MAP = new ConcurrentHashMap<>();
     private static final String URL = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=%s&redirect_uri=%s&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect";
 
     @Value("${wx.mp.callback}")
@@ -44,6 +50,9 @@ public class WXMsgServiceImpl implements WXMsgService {
     @Lazy
     private WxMpService wxMpService;
 
+    @Autowired
+    private WebSocketService webSocketService;
+
     @Override
     public WxMpXmlOutMessage scan(WxMpXmlMessage wxMessage) {
         String openId = wxMessage.getFromUser();
@@ -55,10 +64,11 @@ public class WXMsgServiceImpl implements WXMsgService {
         //已注册
         boolean registered = Objects.nonNull(user);
         //已授权
-        boolean authorized = registered && StringUtils.isNotBlank(user.getName());
+        boolean authorized = registered && StringUtils.isNotBlank(user.getAvatar());
         //用户已注册并授权
         if (registered && authorized) {
             //走登录成功逻辑，通过code找到给channel推送消息
+            webSocketService.scanLoginSuccess(code,user.getId());
             return null;
         }
         //如果用户未注册，就先注册
@@ -68,6 +78,7 @@ public class WXMsgServiceImpl implements WXMsgService {
         }
 
         //推送链接让用户授权
+        WAIT_AUTHORIZE_MAP.put(openId,code);
         String authorizeUrl = String.format(URL, wxMpService.getWxMpConfigStorage().getAppId(), URLEncoder.encode(callback + "/wx/portal/public/callBack"));
         // 扫码事件处理
         return TextBuilder.build("请点击链接授权：<a href=\"" + authorizeUrl + "\">登录</a>", wxMessage);
@@ -76,7 +87,21 @@ public class WXMsgServiceImpl implements WXMsgService {
 
     @Override
     public void authorize(WxOAuth2UserInfo userInfo) {
+        String openid = userInfo.getOpenid();
+        User user = userDao.getByOpenId(openid);
+        //更新用户信息
+        if (StringUtils.isBlank(user.getName())) {
+            fillUserinfo(user.getId(), userInfo);
+        }
+        //通过code找到用户channel进行登录
+        Integer code = WAIT_AUTHORIZE_MAP.remove(openid);
+        webSocketService.scanLoginSuccess(code,user.getId());
+    }
 
+    //更新用户信息
+    private void fillUserinfo(Long uid, WxOAuth2UserInfo userInfo) {
+        User user = UserAdapter.buildAuthorizeUser(uid, userInfo);
+        userDao.updateById(user);
     }
 
     private Integer getEventKey(WxMpXmlMessage wxMessage) {

@@ -4,10 +4,11 @@ import cn.hutool.core.util.RandomUtil;
 import cn.hutool.json.JSONUtil;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
+import com.yan.yanchat.common.user.dao.UserDao;
+import com.yan.yanchat.common.user.domain.entity.User;
+import com.yan.yanchat.common.user.service.LoginService;
 import com.yan.yanchat.common.websocket.domain.dto.WSChannelExtraDTO;
-import com.yan.yanchat.common.websocket.domain.enums.WSRespTypeEnum;
 import com.yan.yanchat.common.websocket.domain.vo.resp.WSBaseResp;
-import com.yan.yanchat.common.websocket.domain.vo.resp.ws.WSLoginUrl;
 import com.yan.yanchat.common.websocket.service.WebSocketService;
 import com.yan.yanchat.common.websocket.service.adapter.WebSocketAdapter;
 import io.netty.channel.Channel;
@@ -32,6 +33,11 @@ public class WebSocketServiceImpl implements WebSocketService {
 
     @Autowired
     private WxMpService wxMpService;
+    @Autowired
+    private UserDao userDao;
+    @Autowired
+    private LoginService loginService;
+
     /**
      * 管理所有用户的连接(包括登录态/游客)
      */
@@ -71,6 +77,21 @@ public class WebSocketServiceImpl implements WebSocketService {
     public void remove(Channel channel) {
         //移除登录用户
         ONLINE_WS_MAP.remove(channel);
+    }
+
+    @Override
+    public void scanLoginSuccess(Integer code, Long uid) {
+        //确认链接在机器上
+        Channel channel = WAIT_LOGIN_MAP.getIfPresent(code);
+        if (Objects.isNull(channel)) {
+            return;
+        }
+        //获取最新的用户信息
+        User user = userDao.getById(uid);
+        //移除code
+        WAIT_LOGIN_MAP.invalidate(code);
+        //调用登录模块获取token
+        String token = loginService.login(uid);
     }
 
     private void sendMsg(Channel channel, WSBaseResp<?> resp) {
