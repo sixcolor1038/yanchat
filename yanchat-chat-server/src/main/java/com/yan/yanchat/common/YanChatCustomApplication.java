@@ -1,5 +1,6 @@
 package com.yan.yanchat.common;
 
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -9,6 +10,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @Description:
  */
 @SpringBootApplication(scanBasePackages = {"com.yan.yanchat"})
+@MapperScan({"com.yan.yanchat.common.**.mapper"})
 public class YanChatCustomApplication {
     public static void main(String[] args) {
         SpringApplication.run(YanChatCustomApplication.class);

@@ -1,7 +1,7 @@
 # yanchat
 yanchat是一个个人IM练习项目. 
 
-springboot3.x+jdk8
+springboot2.6.7+jdk8
 
 | 依赖/软件 | 版本  |
 | --- | --- |

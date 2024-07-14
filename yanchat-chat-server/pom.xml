@@ -17,6 +17,7 @@
             <artifactId>yanchat-common-starter</artifactId>
         </dependency>
 
+       <!-- 代码生成器-->
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-generator</artifactId>
@@ -26,6 +27,13 @@
                     <groupId>com.baomidou</groupId>
                 </exclusion>
             </exclusions>
+        </dependency>
+
+        <!--微信开发相关-->
+        <dependency>
+            <groupId>com.github.binarywang</groupId>
+            <artifactId>weixin-java-mp</artifactId>
+            <version>4.4.0 </version>
         </dependency>
 
     </dependencies>

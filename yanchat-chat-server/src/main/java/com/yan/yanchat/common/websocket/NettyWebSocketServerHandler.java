@@ -29,6 +29,8 @@ public class NettyWebSocketServerHandler extends SimpleChannelInboundHandler<Tex
             IdleStateEvent event = (IdleStateEvent) evt;
             if (event.state() == IdleState.READER_IDLE) {
                 log.info("读空闲");
+                //用户下线
+                ctx.channel().close();
             }
         }
     }

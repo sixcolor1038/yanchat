@@ -23,3 +23,12 @@ spring:
   jackson:
     serialization:
       write-dates-as-timestamps: true
+
+wx:
+  mp:
+    callback: ${yanchat.wx.callback}
+    configs:
+      - appId: ${yanchat.wx.appId}
+        secret: ${yanchat.wx.secret}
+        token: ${yanchat.wx.token}
+       # aesKey: ${yanchat.wx.aesKey}
