@@ -32,3 +32,6 @@ wx:
         secret: ${yanchat.wx.secret}
         token: ${yanchat.wx.token}
        # aesKey: ${yanchat.wx.aesKey}
+
+jwt:
+  secret: ${yanchat.jwt.secret}
