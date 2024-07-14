@@ -1,6 +1,6 @@
 package com.yan.yanchat.common.user.service.handler;
 
-import com.yan.yanchat.common.user.service.WXMsgService;
+import com.yan.yanchat.common.user.service.WxMsgService;
 import me.chanjar.weixin.common.error.WxErrorException;
 import me.chanjar.weixin.common.session.WxSessionManager;
 import me.chanjar.weixin.mp.api.WxMpService;
@@ -14,7 +14,7 @@ import java.util.Map;
 @Component
 public class ScanHandler extends AbstractHandler {
     @Autowired
-    private WXMsgService wxMsgService;
+    private WxMsgService wxMsgService;
 
     @Override
     public WxMpXmlOutMessage handle(WxMpXmlMessage wxMpXmlMessage, Map<String, Object> map,

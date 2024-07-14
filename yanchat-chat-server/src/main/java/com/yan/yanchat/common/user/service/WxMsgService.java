@@ -9,7 +9,7 @@ import me.chanjar.weixin.mp.bean.message.WxMpXmlOutMessage;
  * @Date: 2024-02-14 07:45
  * @Description:
  */
-public interface WXMsgService {
+public interface WxMsgService {
     /**
      * 用户扫码成功
      * @param wxMessage

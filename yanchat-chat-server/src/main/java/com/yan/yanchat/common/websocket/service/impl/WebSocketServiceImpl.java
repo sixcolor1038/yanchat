@@ -17,6 +17,7 @@ import lombok.SneakyThrows;
 import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.result.WxMpQrCodeTicket;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
@@ -32,6 +33,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class WebSocketServiceImpl implements WebSocketService {
 
     @Autowired
+    @Lazy
     private WxMpService wxMpService;
     @Autowired
     private UserDao userDao;
@@ -92,6 +94,17 @@ public class WebSocketServiceImpl implements WebSocketService {
         WAIT_LOGIN_MAP.invalidate(code);
         //调用登录模块获取token
         String token = loginService.login(uid);
+        //用户登录
+        sendMsg(channel,WebSocketAdapter.buildResp(user,token));
+    }
+
+    @Override
+    public void waitAuthorize(Integer code) {
+        Channel channel = WAIT_LOGIN_MAP.getIfPresent(code);
+        if (Objects.isNull(channel)) {
+            return;
+        }
+        sendMsg(channel,WebSocketAdapter.buildWaitAuthorizeResp());
     }
 
     private void sendMsg(Channel channel, WSBaseResp<?> resp) {

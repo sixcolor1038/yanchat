@@ -1,7 +1,7 @@
 package com.yan.yanchat.common.user.service.handler;
 
 
-import com.yan.yanchat.common.user.service.WXMsgService;
+import com.yan.yanchat.common.user.service.WxMsgService;
 import com.yan.yanchat.common.user.service.adapter.TextBuilder;
 import me.chanjar.weixin.common.error.WxErrorException;
 import me.chanjar.weixin.common.session.WxSessionManager;
@@ -20,7 +20,7 @@ import java.util.Map;
 public class SubscribeHandler extends AbstractHandler {
 
     @Autowired
-    private WXMsgService wxMsgService;
+    private WxMsgService wxMsgService;
 
     @Override
     public WxMpXmlOutMessage handle(WxMpXmlMessage wxMessage,

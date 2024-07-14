@@ -3,7 +3,7 @@ package com.yan.yanchat.common.user.service.impl;
 import com.yan.yanchat.common.user.dao.UserDao;
 import com.yan.yanchat.common.user.domain.entity.User;
 import com.yan.yanchat.common.user.service.UserService;
-import com.yan.yanchat.common.user.service.WXMsgService;
+import com.yan.yanchat.common.user.service.WxMsgService;
 import com.yan.yanchat.common.user.service.adapter.TextBuilder;
 import com.yan.yanchat.common.user.service.adapter.UserAdapter;
 import com.yan.yanchat.common.websocket.service.WebSocketService;
@@ -29,7 +29,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 @Service
 @Slf4j
-public class WXMsgServiceImpl implements WXMsgService {
+public class WxMsgServiceImpl implements WxMsgService {
 
     /**
      * openid和登录code关系map
@@ -74,11 +74,12 @@ public class WXMsgServiceImpl implements WXMsgService {
         //如果用户未注册，就先注册
         if (!registered) {
             User insert = UserAdapter.buildUser(openId);
-            Long register = userService.register(insert);
+            userService.register(insert);
         }
 
         //推送链接让用户授权
         WAIT_AUTHORIZE_MAP.put(openId,code);
+        webSocketService.waitAuthorize(code);
         String authorizeUrl = String.format(URL, wxMpService.getWxMpConfigStorage().getAppId(), URLEncoder.encode(callback + "/wx/portal/public/callBack"));
         // 扫码事件处理
         return TextBuilder.build("请点击链接授权：<a href=\"" + authorizeUrl + "\">登录</a>", wxMessage);
