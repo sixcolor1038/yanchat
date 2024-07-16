@@ -16,4 +16,6 @@ public interface UserService {
     Long register(User insert);
 
     UserInfoResp getUserInfo(Long uid);
+
+    void modifyName(Long uid, String name);
 }

@@ -38,4 +38,9 @@ public class UserServiceImpl implements UserService {
         Integer modifyNameCount = userBackpackDao.getCountByValidItemId(uid, ItemEnum.MODIFY_NAME_CARD.getId());
         return UserAdapter.buildUserInfo(user,modifyNameCount);
     }
+
+    @Override
+    public void modifyName(Long uid, String name) {
+        userDao.modifyName(uid,name);
+    }
 }

@@ -1,21 +1,18 @@
 package com.yan.yanchat.common.user.controller;
 
-import cn.hutool.http.server.HttpServerRequest;
 import com.yan.yanchat.common.infrastructure.domain.dto.RequestInfo;
 import com.yan.yanchat.common.infrastructure.domain.vo.resp.ApiResult;
 import com.yan.yanchat.common.infrastructure.utils.RequestHolder;
+import com.yan.yanchat.common.user.domain.vo.req.ModifyNameReq;
 import com.yan.yanchat.common.user.domain.vo.resp.UserInfoResp;
 import com.yan.yanchat.common.user.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 /**
  * @Author: sixcolor
@@ -39,10 +36,15 @@ public class UserController {
 
     @GetMapping("/userinfo")
     @ApiOperation("获取用户信息")
-    public ApiResult<UserInfoResp> getUserInfo(){
-        RequestInfo requestInfo = RequestHolder.get();
+    public ApiResult<UserInfoResp> getUserInfo() {
         return ApiResult.success(userService.getUserInfo(RequestHolder.get().getUid()));
     }
 
+    @PutMapping("/name")
+    @ApiOperation("修改用户名称")
+    public ApiResult<Void> modifyName(@Valid @RequestBody ModifyNameReq req) {
+        userService.modifyName(RequestHolder.get().getUid(), req.getName());
+        return ApiResult.success();
+    }
 }
 
