@@ -23,7 +23,9 @@ spring:
   jackson:
     serialization:
       write-dates-as-timestamps: true
-
+  mvc:
+    pathmatch:
+      matching-strategy: ANT_PATH_MATCHER
 wx:
   mp:
     callback: ${yanchat.wx.callback}
@@ -31,7 +33,7 @@ wx:
       - appId: ${yanchat.wx.appId}
         secret: ${yanchat.wx.secret}
         token: ${yanchat.wx.token}
-       # aesKey: ${yanchat.wx.aesKey}
+      # aesKey: ${yanchat.wx.aesKey}
 
 jwt:
   secret: ${yanchat.jwt.secret}
