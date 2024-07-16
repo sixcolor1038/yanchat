@@ -1,5 +1,6 @@
 package com.yan.yanchat.common.infrastructure.domain.vo.resp;
 
+import com.yan.yanchat.common.infrastructure.exception.ErrorEnum;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -40,6 +41,14 @@ public class ApiResult<T> {
         result.setSuccess(Boolean.FALSE);
         result.setErrCode(code);
         result.setErrMsg(msg);
+        return result;
+    }
+
+    public static <T> ApiResult<T> fail(ErrorEnum e) {
+        ApiResult<T> result = new ApiResult<T>();
+        result.setSuccess(Boolean.FALSE);
+        result.setErrCode(e.getErrorCode());
+        result.setErrMsg(e.getErrorMsg());
         return result;
     }
 

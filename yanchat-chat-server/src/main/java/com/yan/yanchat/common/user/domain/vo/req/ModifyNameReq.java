@@ -5,6 +5,7 @@ import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 /**
  * @Author: sixcolor
@@ -13,6 +14,11 @@ import javax.validation.constraints.NotBlank;
  */
 @Data
 public class ModifyNameReq {
+
+    @ApiModelProperty(value = "用户id")
+    @NotNull
+    private Integer id;
+
     @ApiModelProperty(value = "用户名称")
     @NotBlank(message = "用户名称不能为空")
     @Length(max = 6, message = "用户名称不能超过六位")
