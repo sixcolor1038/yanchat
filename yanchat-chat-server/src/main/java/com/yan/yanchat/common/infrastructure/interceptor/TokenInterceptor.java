@@ -19,6 +19,7 @@ import java.util.Optional;
 @Component
 public class TokenInterceptor implements HandlerInterceptor {
 
+    public static final String UID = "uid";
     @Autowired
     private LoginService loginService;
     public static final String HEADER_AUTHORIZATION = "Authorization";
@@ -30,7 +31,7 @@ public class TokenInterceptor implements HandlerInterceptor {
         Long uid = loginService.getValidUid(token);
         if (Objects.nonNull(uid)) {
             //用户有登录态
-            request.setAttribute("uid", uid);
+            request.setAttribute(UID, uid);
         } else {
             //用户未登录
             boolean isPublicURI = isPublicURI(request);
