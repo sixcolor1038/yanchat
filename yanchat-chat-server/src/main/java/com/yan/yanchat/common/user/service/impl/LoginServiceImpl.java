@@ -55,7 +55,7 @@ public class LoginServiceImpl implements LoginService {
         if (Objects.isNull(uid)) {
             return null;
         }
-        String oldToken = RedisUtils.get(getUserTokenKey(uid));
+        String oldToken = RedisUtils.getStr(getUserTokenKey(uid));
         //如果旧token和新token相同，则返回uid
         return Objects.equals(oldToken, token) ? uid : null;
     }
