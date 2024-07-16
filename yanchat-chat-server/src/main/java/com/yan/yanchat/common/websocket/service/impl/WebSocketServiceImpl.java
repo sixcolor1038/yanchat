@@ -107,6 +107,17 @@ public class WebSocketServiceImpl implements WebSocketService {
         sendMsg(channel,WebSocketAdapter.buildWaitAuthorizeResp());
     }
 
+    @Override
+    public void authorize(Channel channel, String token) {
+        Long uid = loginService.getValidUid(token);
+        if (Objects.nonNull(uid)){
+            User user = userDao.getById(uid);
+            sendMsg(channel,WebSocketAdapter.buildResp(user,token));
+        }else {
+            sendMsg(channel,WebSocketAdapter.buildInvalidTokenResp());
+        }
+    }
+
     private void sendMsg(Channel channel, WSBaseResp<?> resp) {
         channel.writeAndFlush(new TextWebSocketFrame(JSONUtil.toJsonStr(resp)));
     }

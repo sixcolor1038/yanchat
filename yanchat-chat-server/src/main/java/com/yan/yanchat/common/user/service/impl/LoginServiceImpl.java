@@ -4,7 +4,6 @@ import com.yan.yanchat.common.infrastructure.constant.RedisConstant;
 import com.yan.yanchat.common.infrastructure.utils.JWTUtils;
 import com.yan.yanchat.common.infrastructure.utils.RedisUtils;
 import com.yan.yanchat.common.user.service.LoginService;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +19,7 @@ import java.util.concurrent.TimeUnit;
 public class LoginServiceImpl implements LoginService {
 
     public static final int TOKEN_EXPIRE_DAYS = 3;
+    public static final int RENEW_DAY = 1;
     @Autowired
     private JWTUtils jwtUtils;
 
@@ -30,7 +30,15 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     public void renewalTokenIfNecessary(String token) {
-
+        Long uid = getValidUid(token);
+        String userTokenKey = getUserTokenKey(uid);
+        Long expireDay = RedisUtils.getExpire(userTokenKey, TimeUnit.DAYS);
+        if (expireDay == -2) {
+            return;
+        }
+        if (expireDay < RENEW_DAY) {
+            RedisUtils.set(getUserTokenKey(uid), token, TOKEN_EXPIRE_DAYS, TimeUnit.DAYS);
+        }
     }
 
     @Override
