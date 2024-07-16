@@ -1,6 +1,7 @@
 package com.yan.yanchat.common.user.service;
 
 import com.yan.yanchat.common.user.domain.entity.User;
+import com.yan.yanchat.common.user.domain.vo.resp.UserInfoResp;
 import org.springframework.stereotype.Service;
 
 
@@ -13,4 +14,6 @@ import org.springframework.stereotype.Service;
 public interface UserService {
 
     Long register(User insert);
+
+    UserInfoResp getUserInfo(Long uid);
 }
