@@ -1,5 +1,6 @@
 package com.yan.yanchat.common.user.controller;
 
+import com.yan.yanchat.common.infrastructure.domain.vo.resp.ApiResult;
 import com.yan.yanchat.common.user.domain.vo.resp.UserInfoResp;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/capi/user")
-@Api(value = "用户模块接口")
+@Api(tags = "用户模块接口")
 public class UserController {
 
     @GetMapping()
@@ -26,7 +27,7 @@ public class UserController {
 
     @GetMapping("/userinfo")
     @ApiOperation("获取用户信息")
-    public UserInfoResp getUserInfo(@RequestParam Long uid){
+    public ApiResult<UserInfoResp> getUserInfo(){
 
         return null;
     }
