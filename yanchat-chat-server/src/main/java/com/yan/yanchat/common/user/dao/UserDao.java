@@ -21,4 +21,8 @@ public class UserDao extends ServiceImpl<UserMapper, User> {
     public void modifyName(Long uid, String name) {
         updateById(User.builder().id(uid).name(name).build());
     }
+
+    public User getByName(String name) {
+        return lambdaQuery().eq(User::getName, name).one();
+    }
 }

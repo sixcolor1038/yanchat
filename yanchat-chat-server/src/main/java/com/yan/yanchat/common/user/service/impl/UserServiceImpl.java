@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Objects;
+
 /**
  * @Author: sixcolor
  * @Date: 2024-02-15 16:33
@@ -41,6 +43,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void modifyName(Long uid, String name) {
+        User user = userDao.getByName(name);
+        
         userDao.modifyName(uid,name);
     }
 }
