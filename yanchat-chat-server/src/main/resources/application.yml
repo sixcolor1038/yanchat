@@ -9,6 +9,11 @@ spring:
     username: ${yanchat.mysql.username}
     password: ${yanchat.mysql.password}
     driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      minimum-idle: 3
+      maximum-pool-size: 10
+      max-lifetime: 30000   #不能小于30秒，否则默认回到1800秒
+      connection-test-query: SELECT 1
   redis:
     # Redis服务器地址
     host: ${yanchat.redis.host}
@@ -37,3 +42,13 @@ wx:
 
 jwt:
   secret: ${yanchat.jwt.secret}
+mybatis-plus:
+  mapper-locations: classpath:mapper/**/*.xml
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    map-underscore-to-camel-case: true
+logging:
+  level:
+    org.springframework.web: INFO
+    com.github.binarywang.demo.wx.mp: DEBUG
+    me.chanjar.weixin: DEBUG

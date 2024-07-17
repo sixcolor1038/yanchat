@@ -37,20 +37,27 @@ public class NettyWebSocketServer {
     private EventLoopGroup bossGroup = new NioEventLoopGroup(1);
     private EventLoopGroup workerGroup = new NioEventLoopGroup(NettyRuntime.availableProcessors());
 
-    //启动websocket server
+    /**
+     * 启动 ws server
+     *
+     * @return
+     * @throws InterruptedException
+     */
     @PostConstruct
     public void start() throws InterruptedException {
         run();
     }
 
-    //销毁
+    /**
+     * 销毁
+     */
     @PreDestroy
     public void destroy() {
         Future<?> future = bossGroup.shutdownGracefully();
         Future<?> future1 = workerGroup.shutdownGracefully();
         future.syncUninterruptibly();
         future1.syncUninterruptibly();
-        log.info("ws 已销毁");
+        log.info("关闭 ws server 成功");
     }
 
     public void run() throws InterruptedException {
@@ -60,8 +67,7 @@ public class NettyWebSocketServer {
                 .channel(NioServerSocketChannel.class)
                 .option(ChannelOption.SO_BACKLOG, 128)
                 .option(ChannelOption.SO_KEEPALIVE, true)
-                // 为 bossGroup 添加 日志处理器
-                .handler(new LoggingHandler(LogLevel.INFO))
+                .handler(new LoggingHandler(LogLevel.INFO)) // 为 bossGroup 添加 日志处理器
                 .childHandler(new ChannelInitializer<SocketChannel>() {
                     @Override
                     protected void initChannel(SocketChannel socketChannel) throws Exception {
@@ -79,7 +85,7 @@ public class NettyWebSocketServer {
                          */
                         pipeline.addLast(new HttpObjectAggregator(8192));
                         //保存用户ip
-                       // pipeline.addLast(new HttpHeadersHandler());
+                        pipeline.addLast(new HttpHeadersHandler());
                         /**
                          * 说明：
                          *  1. 对于 WebSocket，它的数据是以帧frame 的形式传递的；
@@ -88,8 +94,7 @@ public class NettyWebSocketServer {
                          *  4. WebSocketServerProtocolHandler 核心功能是把 http协议升级为 ws 协议，保持长连接；
                          *      是通过一个状态码 101 来切换的
                          */
-                        //pipeline.addLast(new WebSocketServerProtocolHandler("/"));
-                        pipeline.addLast(new HttpHeadersHandler());
+                        pipeline.addLast(new WebSocketServerProtocolHandler("/"));
                         // 自定义handler ，处理业务逻辑
                         pipeline.addLast(NETTY_WEB_SOCKET_SERVER_HANDLER);
                     }
