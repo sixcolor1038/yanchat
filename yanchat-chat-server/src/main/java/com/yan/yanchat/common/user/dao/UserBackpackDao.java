@@ -6,6 +6,8 @@ import com.yan.yanchat.common.user.domain.entity.UserBackpack;
 import com.yan.yanchat.common.user.mapper.UserBackpackMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @Author: sixcolor
  * @Date: 2024-02-16 08:16
@@ -37,5 +39,12 @@ public class UserBackpackDao extends ServiceImpl<UserBackpackMapper, UserBackpac
                 .update();
 
 
+    }
+
+    public List<UserBackpack> getByItemIds(Long uid, List<Long> itemId) {
+        return lambdaQuery().eq(UserBackpack::getUid, uid)
+                .eq(UserBackpack::getStatus, BaseEnum.NO.getStatus())
+                .in(UserBackpack::getItemId, itemId)
+                .list();
     }
 }

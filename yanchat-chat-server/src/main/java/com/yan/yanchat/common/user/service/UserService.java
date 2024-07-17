@@ -1,9 +1,11 @@
 package com.yan.yanchat.common.user.service;
 
 import com.yan.yanchat.common.user.domain.entity.User;
+import com.yan.yanchat.common.user.domain.vo.resp.BadgeResp;
 import com.yan.yanchat.common.user.domain.vo.resp.UserInfoResp;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 
 /**
  * @Author: sixcolor
@@ -18,4 +20,6 @@ public interface UserService {
     UserInfoResp getUserInfo(Long uid);
 
     void modifyName(Long uid, String name);
+
+    List<BadgeResp> badges(Long uid);
 }

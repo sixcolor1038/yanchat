@@ -3,15 +3,22 @@ package com.yan.yanchat.common.user.service.impl;
 import com.yan.yanchat.common.infrastructure.utils.AssertUtil;
 import com.yan.yanchat.common.user.dao.UserBackpackDao;
 import com.yan.yanchat.common.user.dao.UserDao;
+import com.yan.yanchat.common.user.domain.entity.ItemConfig;
 import com.yan.yanchat.common.user.domain.entity.User;
 import com.yan.yanchat.common.user.domain.entity.UserBackpack;
 import com.yan.yanchat.common.user.domain.enums.ItemEnum;
+import com.yan.yanchat.common.user.domain.enums.ItemTypeEnum;
+import com.yan.yanchat.common.user.domain.vo.resp.BadgeResp;
 import com.yan.yanchat.common.user.domain.vo.resp.UserInfoResp;
 import com.yan.yanchat.common.user.service.UserService;
 import com.yan.yanchat.common.user.service.adapter.UserAdapter;
+import com.yan.yanchat.common.user.service.cache.ItemCache;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @Author: sixcolor
@@ -26,6 +33,8 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserBackpackDao userBackpackDao;
+    @Autowired
+    private ItemCache itemCache;
 
     @Override
     @Transactional
@@ -53,5 +62,16 @@ public class UserServiceImpl implements UserService {
             userDao.modifyName(uid, name);
         }
 
+    }
+
+    @Override
+    public List<BadgeResp> badges(Long uid) {
+        //查询所有徽章
+        List<ItemConfig> itemConfigs = itemCache.getByType(ItemTypeEnum.BADGE.getType());
+        //查询用户拥有徽章
+        List<UserBackpack> backpacks = userBackpackDao.getByItemIds(uid, itemConfigs.stream().map(ItemConfig::getId).collect(Collectors.toList()));
+        //查询用户佩戴的徽章
+        User user = userDao.getById(uid);
+        return UserAdapter.buildBadgeResp(itemConfigs, backpacks, user);
     }
 }

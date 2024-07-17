@@ -1,9 +1,9 @@
 package com.yan.yanchat.common.user.controller;
 
-import com.yan.yanchat.common.infrastructure.domain.dto.RequestInfo;
 import com.yan.yanchat.common.infrastructure.domain.vo.resp.ApiResult;
 import com.yan.yanchat.common.infrastructure.utils.RequestHolder;
 import com.yan.yanchat.common.user.domain.vo.req.ModifyNameReq;
+import com.yan.yanchat.common.user.domain.vo.resp.BadgeResp;
 import com.yan.yanchat.common.user.domain.vo.resp.UserInfoResp;
 import com.yan.yanchat.common.user.service.UserService;
 import io.swagger.annotations.Api;
@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * @Author: sixcolor
@@ -45,6 +46,12 @@ public class UserController {
     public ApiResult<Void> modifyName(@Valid @RequestBody ModifyNameReq req) {
         userService.modifyName(RequestHolder.get().getUid(), req.getName());
         return ApiResult.success();
+    }
+
+    @GetMapping("/badges")
+    @ApiOperation("可选徽章预览")
+    public ApiResult<List<BadgeResp>> badges() {
+        return ApiResult.success(userService.badges(RequestHolder.get().getUid()));
     }
 }
 
