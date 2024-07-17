@@ -1,6 +1,7 @@
 package com.yan.yanchat.common.user.service.impl;
 
 import com.yan.yanchat.common.infrastructure.utils.AssertUtil;
+import com.yan.yanchat.common.user.dao.ItemConfigDao;
 import com.yan.yanchat.common.user.dao.UserBackpackDao;
 import com.yan.yanchat.common.user.dao.UserDao;
 import com.yan.yanchat.common.user.domain.entity.ItemConfig;
@@ -30,7 +31,8 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserDao userDao;
-
+    @Autowired
+    private ItemConfigDao itemConfigDao;
     @Autowired
     private UserBackpackDao userBackpackDao;
     @Autowired
@@ -73,5 +75,15 @@ public class UserServiceImpl implements UserService {
         //查询用户佩戴的徽章
         User user = userDao.getById(uid);
         return UserAdapter.buildBadgeResp(itemConfigs, backpacks, user);
+    }
+
+    @Override
+    public void wearingBadge(Long uid, Long itemId) {
+        //确保有徽章
+        UserBackpack firstValidItem = userBackpackDao.getFirstValidItem(uid, itemId);
+        AssertUtil.isNotEmpty(firstValidItem, "您还没有这个徽章，快去获得吧");
+        ItemConfig itemConfig = itemConfigDao.getById(firstValidItem.getItemId());
+        AssertUtil.equal(itemConfig.getType(),ItemTypeEnum.BADGE.getType(),"只有徽章才能佩戴");
+        userDao.wearingBadge(uid,itemId);
     }
 }

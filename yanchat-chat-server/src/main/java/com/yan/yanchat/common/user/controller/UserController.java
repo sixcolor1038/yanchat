@@ -3,6 +3,7 @@ package com.yan.yanchat.common.user.controller;
 import com.yan.yanchat.common.infrastructure.domain.vo.resp.ApiResult;
 import com.yan.yanchat.common.infrastructure.utils.RequestHolder;
 import com.yan.yanchat.common.user.domain.vo.req.ModifyNameReq;
+import com.yan.yanchat.common.user.domain.vo.req.WearingBadgeReq;
 import com.yan.yanchat.common.user.domain.vo.resp.BadgeResp;
 import com.yan.yanchat.common.user.domain.vo.resp.UserInfoResp;
 import com.yan.yanchat.common.user.service.UserService;
@@ -52,6 +53,13 @@ public class UserController {
     @ApiOperation("可选徽章预览")
     public ApiResult<List<BadgeResp>> badges() {
         return ApiResult.success(userService.badges(RequestHolder.get().getUid()));
+    }
+
+    @PutMapping("/badge")
+    @ApiOperation("可选徽章预览")
+    public ApiResult<Void> wearingBadge(@Valid @RequestBody WearingBadgeReq req) {
+        userService.wearingBadge(RequestHolder.get().getUid(), req.getItemId());
+        return ApiResult.success();
     }
 }
 
