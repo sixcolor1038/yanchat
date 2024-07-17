@@ -56,7 +56,7 @@ public class UserController {
     }
 
     @PutMapping("/badge")
-    @ApiOperation("可选徽章预览")
+    @ApiOperation("佩戴徽章")
     public ApiResult<Void> wearingBadge(@Valid @RequestBody WearingBadgeReq req) {
         userService.wearingBadge(RequestHolder.get().getUid(), req.getItemId());
         return ApiResult.success();
