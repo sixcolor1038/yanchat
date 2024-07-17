@@ -54,7 +54,7 @@ public class WxMsgServiceImpl implements WxMsgService {
     private WebSocketService webSocketService;
 
     @Override
-    public WxMpXmlOutMessage scan(WxMpXmlMessage wxMessage) {
+    public WxMpXmlOutMessage scan(WxMpService wxMpService, WxMpXmlMessage wxMessage) {
         String openId = wxMessage.getFromUser();
         Integer code = getEventKey(wxMessage);
         if (Objects.isNull(code)) {

@@ -1,6 +1,7 @@
 package com.yan.yanchat.common.user.service;
 
 import me.chanjar.weixin.common.bean.WxOAuth2UserInfo;
+import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlMessage;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlOutMessage;
 
@@ -15,7 +16,7 @@ public interface WxMsgService {
      * @param wxMessage
      * @return
      */
-    WxMpXmlOutMessage scan(WxMpXmlMessage wxMessage);
+    WxMpXmlOutMessage scan(WxMpService wxMpService, WxMpXmlMessage wxMpXmlMessage);
 
     /**
      * 用户授权

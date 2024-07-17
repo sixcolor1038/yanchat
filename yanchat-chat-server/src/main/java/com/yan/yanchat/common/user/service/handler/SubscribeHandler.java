@@ -24,15 +24,15 @@ public class SubscribeHandler extends AbstractHandler {
 
     @Override
     public WxMpXmlOutMessage handle(WxMpXmlMessage wxMessage,
-                                    Map<String, Object> context, WxMpService weixinService,
+                                    Map<String, Object> context, WxMpService wxMpService,
                                     WxSessionManager sessionManager) throws WxErrorException {
 
         this.logger.info("新关注用户 OPENID: " + wxMessage.getFromUser());
 
         WxMpXmlOutMessage responseResult = null;
         try {
-            responseResult= wxMsgService.scan(wxMessage);
-         //   responseResult = this.handleSpecial(weixinService, wxMessage);
+            responseResult = wxMsgService.scan(wxMpService, wxMessage);
+            //   responseResult = this.handleSpecial(weixinService, wxMessage);
         } catch (Exception e) {
             this.logger.error(e.getMessage(), e);
         }
@@ -41,9 +41,8 @@ public class SubscribeHandler extends AbstractHandler {
             return responseResult;
         }
 
-        return TextBuilder.build("感谢关注！",wxMessage);
+        return TextBuilder.build("感谢关注！", wxMessage);
     }
-
 
 
 }

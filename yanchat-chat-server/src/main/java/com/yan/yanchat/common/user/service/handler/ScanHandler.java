@@ -19,7 +19,8 @@ public class ScanHandler extends AbstractHandler {
     @Override
     public WxMpXmlOutMessage handle(WxMpXmlMessage wxMpXmlMessage, Map<String, Object> map,
                                     WxMpService wxMpService, WxSessionManager wxSessionManager) throws WxErrorException {
-        return null;//wxMsgService.scan(wxMpService, wxMpXmlMessage);
+        //扫码事件处理
+        return wxMsgService.scan(wxMpService, wxMpXmlMessage);
     }
 
 }

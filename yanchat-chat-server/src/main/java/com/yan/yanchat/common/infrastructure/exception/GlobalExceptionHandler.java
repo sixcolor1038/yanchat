@@ -29,9 +29,15 @@ public class GlobalExceptionHandler {
      * 业务异常
      */
     @ExceptionHandler(value = BusinessException.class)
-    public ApiResult<?> businessException(BusinessException e){
-        log.info("business exception！ the reason is :{}",e.getMessage());
+    public ApiResult<?> businessException(BusinessException e) {
+        log.info("business exception！ the reason is :{}", e.getMessage());
         return ApiResult.fail(e.getErrorCode(), e.getErrorMsg());
+    }
+
+    @ExceptionHandler(value = Throwable.class)
+    public ApiResult<?> throwable(Throwable e) {
+        log.info("system exception！ the reason is :{}", e.getMessage(), e);
+        return ApiResult.fail(CommonErrorEnum.SYSTEM_ERROR);
     }
 
 }
