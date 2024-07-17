@@ -1,13 +1,11 @@
 package com.yan.yanchat.common.user.service.impl;
 
 import com.yan.yanchat.common.infrastructure.domain.enums.BaseEnum;
-import com.yan.yanchat.common.infrastructure.utils.AssertUtil;
+import com.yan.yanchat.common.infrastructure.service.LockService;
 import com.yan.yanchat.common.user.dao.UserBackpackDao;
 import com.yan.yanchat.common.user.domain.entity.UserBackpack;
 import com.yan.yanchat.common.user.domain.enums.IdempotentEnum;
 import com.yan.yanchat.common.user.service.UserBackpackService;
-import org.redisson.api.RLock;
-import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +20,7 @@ import java.util.Objects;
 public class UserBackpackServiceImpl implements UserBackpackService {
 
     @Autowired
-    private RedissonClient redissonClient;
+    private LockService lockService;
     @Autowired
     private UserBackpackDao userBackpackDao;
 
@@ -31,10 +29,7 @@ public class UserBackpackServiceImpl implements UserBackpackService {
         //获取幂等号
         String idempotent = getIdempotent(itemId, idempotentEnum, businessId);
         //获取锁
-        RLock lock = redissonClient.getLock("acquireItem" + idempotent);
-        boolean tried = lock.tryLock();
-        AssertUtil.isTrue(tried, "请求太频繁了");
-        try {
+        lockService.executeWithLock("acquireItem" + idempotent, () -> {
             //查询幂等号是否存在
             UserBackpack userBackpack = userBackpackDao.getByIdempotent(idempotent);
             if (Objects.nonNull(userBackpack)) {
@@ -51,11 +46,8 @@ public class UserBackpackServiceImpl implements UserBackpackService {
                     .idempotent(idempotent)
                     .build();
             userBackpackDao.save(insert);
+        });
 
-        } finally {
-            //释放锁
-            lock.unlock();
-        }
     }
 
     /**
