@@ -13,7 +13,7 @@ import java.util.function.Supplier;
 /**
  * @Author: sixcolor
  * @Date: 2024-02-16 20:53
- * @Description:
+ * @Description: 分布式锁-编程式
  */
 @Service
 public class LockService {
