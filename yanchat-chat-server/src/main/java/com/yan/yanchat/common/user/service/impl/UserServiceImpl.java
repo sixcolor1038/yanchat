@@ -1,5 +1,6 @@
 package com.yan.yanchat.common.user.service.impl;
 
+import com.yan.yanchat.common.infrastructure.event.UserRegisterEvent;
 import com.yan.yanchat.common.infrastructure.utils.AssertUtil;
 import com.yan.yanchat.common.user.dao.ItemConfigDao;
 import com.yan.yanchat.common.user.dao.UserBackpackDao;
@@ -15,6 +16,7 @@ import com.yan.yanchat.common.user.service.UserService;
 import com.yan.yanchat.common.user.service.adapter.UserAdapter;
 import com.yan.yanchat.common.user.service.cache.ItemCache;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,11 +39,15 @@ public class UserServiceImpl implements UserService {
     private UserBackpackDao userBackpackDao;
     @Autowired
     private ItemCache itemCache;
+    @Autowired
+    private ApplicationEventPublisher applicationEventPublisher;
 
     @Override
     @Transactional
     public Long register(User insert) {
         userDao.save(insert);
+        //用户注册时间
+        applicationEventPublisher.publishEvent(new UserRegisterEvent(this,insert));
         return insert.getId();
     }
 
