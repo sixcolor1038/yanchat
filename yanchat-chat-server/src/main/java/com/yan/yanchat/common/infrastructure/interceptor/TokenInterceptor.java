@@ -19,11 +19,12 @@ import java.util.Optional;
 @Component
 public class TokenInterceptor implements HandlerInterceptor {
 
+    public static final String AUTHORIZATION_HEADER = "Authorization";
+    public static final String AUTHORIZATION_SCHEMA = "Bearer ";
     public static final String UID = "uid";
     @Autowired
     private LoginService loginService;
-    public static final String HEADER_AUTHORIZATION = "Authorization";
-    public static final String AUTHORIZATION_SCHEMA = "Bearer ";
+
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -47,11 +48,11 @@ public class TokenInterceptor implements HandlerInterceptor {
     private static boolean isPublicURI(HttpServletRequest request) {
         String requestURI = request.getRequestURI();
         String[] split = requestURI.split("/");
-        return split.length > 3 && "public".equals(split[3]);
+        return split.length > 2 && "public".equals(split[3]);
     }
 
     private String getToken(HttpServletRequest request) {
-        String header = request.getHeader(HEADER_AUTHORIZATION);
+        String header = request.getHeader(AUTHORIZATION_HEADER);
         return Optional.ofNullable(header)
                 .filter(x -> x.startsWith(AUTHORIZATION_SCHEMA))
                 .map(x -> x.replaceFirst(AUTHORIZATION_SCHEMA, ""))

@@ -94,7 +94,7 @@ public class NettyWebSocketServer {
                          *  4. WebSocketServerProtocolHandler 核心功能是把 http协议升级为 ws 协议，保持长连接；
                          *      是通过一个状态码 101 来切换的
                          */
-                        pipeline.addLast(new WebSocketServerProtocolHandler("/"));
+                         pipeline.addLast(new WebSocketServerProtocolHandler("/"));
                         // 自定义handler ，处理业务逻辑
                         pipeline.addLast(NETTY_WEB_SOCKET_SERVER_HANDLER);
                     }
