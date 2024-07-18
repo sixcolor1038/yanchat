@@ -4,6 +4,8 @@ import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
+import java.util.Objects;
+import java.util.Optional;
 
 /**
  * @Author: sixcolor
@@ -35,4 +37,22 @@ public class IpInfo implements Serializable {
         }
         updateIp = ip;
     }
+
+    public String needRefreshIp() {
+        boolean notNeedRefreshIp = Optional.ofNullable(updateIpDetail)
+                .map(IpDetail::getIp)
+                .filter(ip -> Objects.equals(ip, updateIp))
+                .isPresent();
+        return notNeedRefreshIp?null:updateIp;
+    }
+
+    public void refreshIpDetail(IpDetail ipDetail) {
+        if (Objects.equals(createIp,ipDetail.getIp())){
+            createIpDetail=ipDetail;
+        }
+        if (Objects.equals(updateIp,ipDetail.getIp())){
+            updateIpDetail=ipDetail;
+        }
+    }
+
 }

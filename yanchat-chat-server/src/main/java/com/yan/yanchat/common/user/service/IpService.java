@@ -6,5 +6,5 @@ package com.yan.yanchat.common.user.service;
  * @Description:
  */
 public interface IpService {
-    void refreshIpDetailAsync(Long id);
+    void refreshIpDetailAsync(Long uid);
 }
