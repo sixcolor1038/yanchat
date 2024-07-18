@@ -35,11 +35,13 @@ public class HttpHeadersHandler extends ChannelInboundHandlerAdapter {
                 InetSocketAddress address = (InetSocketAddress) ctx.channel().remoteAddress();
                 ip = address.getAddress().getHostAddress();
             }
+            //保存到channel附件
             NettyUtil.setAttr(ctx.channel(), NettyUtil.IP, ip);
+            //处理器只需要用一次
             ctx.pipeline().remove(this);
             ctx.fireChannelRead(request);
-        } else {
-            ctx.fireChannelRead(msg);
         }
+        ctx.fireChannelRead(msg);
+
     }
 }
