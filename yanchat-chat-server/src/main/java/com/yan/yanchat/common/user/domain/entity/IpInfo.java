@@ -29,13 +29,13 @@ public class IpInfo implements Serializable {
     private IpDetail updateIpDetail;
 
     public void refreshIp(String ip) {
-        if (StringUtils.isBlank(ip)){
+        if (StringUtils.isBlank(ip)) {
             return;
         }
-        if (StringUtils.isBlank(ip)) {
+        updateIp = ip;
+        if (createIp == null) {
             createIp = ip;
         }
-        updateIp = ip;
     }
 
     public String needRefreshIp() {

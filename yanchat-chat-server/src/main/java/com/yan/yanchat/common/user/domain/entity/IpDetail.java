@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 /**
  * @Author: sixcolor
  * @Date: 2024-02-18 11:15
@@ -16,7 +18,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class IpDetail {
+public class IpDetail implements Serializable {
     private static final long serialVersionUID = 1L;
     //注册时的ip
     private String ip;

@@ -40,8 +40,9 @@ public class HttpHeadersHandler extends ChannelInboundHandlerAdapter {
             //处理器只需要用一次
             ctx.pipeline().remove(this);
             ctx.fireChannelRead(request);
-        }
-        ctx.fireChannelRead(msg);
+        } else {
+            ctx.fireChannelRead(msg);
 
+        }
     }
 }

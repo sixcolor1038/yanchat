@@ -64,6 +64,18 @@ public class NettyWebSocketServerHandler extends SimpleChannelInboundHandler<Tex
     }
 
     /**
+     * 异常处理
+     * @param ctx
+     * @param cause
+     * @throws Exception
+     */
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+        log.warn("异常发生，异常消息 ={}", cause);
+        ctx.channel().close();
+    }
+
+    /**
      * 用户下线统一处理
      *
      * @param channel

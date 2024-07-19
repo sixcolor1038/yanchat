@@ -20,7 +20,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Data
 @EqualsAndHashCode(callSuper = false)
-@TableName("user")
+@TableName(value ="user", autoResultMap = true)
 @Builder
 public class User implements Serializable {
 

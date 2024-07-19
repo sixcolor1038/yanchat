@@ -31,13 +31,11 @@ public class UserOnlineListener {
     private IpService ipService;
 
     /**
-     * 发放改名卡
-     * 异步执行
-     * 在事务提交后执行，不能影响用户注册的事务
+     * 更新用户信息
      */
     @Async
-    @TransactionalEventListener(classes = UserOnlineEvent.class, phase = TransactionPhase.AFTER_COMMIT)
-    public void saveDB(UserRegisterEvent event) {
+    @TransactionalEventListener(classes = UserOnlineEvent.class, phase = TransactionPhase.AFTER_COMMIT,fallbackExecution = true)
+    public void saveDB(UserOnlineEvent event) {
         User user = event.getUser();
         User update = new User();
         update.setId(user.getId());
