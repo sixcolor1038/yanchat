@@ -4,6 +4,7 @@ import com.yan.yanchat.common.infrastructure.domain.enums.BaseEnum;
 import com.yan.yanchat.common.user.domain.entity.User;
 import com.yan.yanchat.common.websocket.domain.enums.WSRespTypeEnum;
 import com.yan.yanchat.common.websocket.domain.vo.resp.WSBaseResp;
+import com.yan.yanchat.common.websocket.domain.vo.resp.ws.WSBlack;
 import com.yan.yanchat.common.websocket.domain.vo.resp.ws.WSLoginSuccess;
 import com.yan.yanchat.common.websocket.domain.vo.resp.ws.WSLoginUrl;
 import me.chanjar.weixin.mp.bean.result.WxMpQrCodeTicket;
@@ -51,5 +52,15 @@ public class WebSocketAdapter {
         resp.setType(WSRespTypeEnum.INVALIDATE_TOKEN.getType());
         return resp;
 
+    }
+
+    public static WSBaseResp<?> buildBlack(User user) {
+        WSBaseResp<WSBlack> resp = new WSBaseResp<>();
+        resp.setType(WSRespTypeEnum.BLACK.getType());
+        WSBlack build = WSBlack.builder()
+                .uid(user.getId())
+                .build();
+        resp.setData(build);
+        return resp;
     }
 }

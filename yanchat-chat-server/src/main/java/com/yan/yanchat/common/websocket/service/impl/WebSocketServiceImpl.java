@@ -4,14 +4,13 @@ import cn.hutool.core.util.RandomUtil;
 import cn.hutool.json.JSONUtil;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
+import com.yan.yanchat.common.infrastructure.config.ThreadPoolConfig;
 import com.yan.yanchat.common.infrastructure.event.UserOnlineEvent;
 import com.yan.yanchat.common.user.dao.UserDao;
-import com.yan.yanchat.common.user.domain.entity.IpInfo;
 import com.yan.yanchat.common.user.domain.entity.User;
 import com.yan.yanchat.common.user.domain.enums.RoleEnum;
 import com.yan.yanchat.common.user.service.LoginService;
 import com.yan.yanchat.common.user.service.RoleService;
-import com.yan.yanchat.common.user.service.UserRoleService;
 import com.yan.yanchat.common.websocket.NettyUtil;
 import com.yan.yanchat.common.websocket.domain.dto.WSChannelExtraDTO;
 import com.yan.yanchat.common.websocket.domain.vo.resp.WSBaseResp;
@@ -23,8 +22,10 @@ import lombok.SneakyThrows;
 import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.result.WxMpQrCodeTicket;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
@@ -51,6 +52,9 @@ public class WebSocketServiceImpl implements WebSocketService {
     private ApplicationEventPublisher applicationEventPublisher;
     @Autowired
     private RoleService roleService;
+    @Autowired
+    @Qualifier(ThreadPoolConfig.WS_EXECUTOR)
+    private ThreadPoolTaskExecutor threadPoolTaskExecutor;
 
     /**
      * 管理所有用户的连接(包括登录态/游客)
@@ -106,7 +110,7 @@ public class WebSocketServiceImpl implements WebSocketService {
         //调用登录模块获取token
         String token = loginService.login(uid);
         //用户登录
-        loginSuccess(channel,user,token);
+        loginSuccess(channel, user, token);
     }
 
     @Override
@@ -115,18 +119,26 @@ public class WebSocketServiceImpl implements WebSocketService {
         if (Objects.isNull(channel)) {
             return;
         }
-        sendMsg(channel,WebSocketAdapter.buildWaitAuthorizeResp());
+        sendMsg(channel, WebSocketAdapter.buildWaitAuthorizeResp());
     }
 
     @Override
     public void authorize(Channel channel, String token) {
         Long uid = loginService.getValidUid(token);
-        if (Objects.nonNull(uid)){
+        if (Objects.nonNull(uid)) {
             User user = userDao.getById(uid);
-            loginSuccess(channel,user,token);
-        }else {
-            sendMsg(channel,WebSocketAdapter.buildInvalidTokenResp());
+            loginSuccess(channel, user, token);
+        } else {
+            sendMsg(channel, WebSocketAdapter.buildInvalidTokenResp());
         }
+    }
+
+    @Override
+    public void sendMsgToAll(WSBaseResp<?> msg) {
+        ONLINE_WS_MAP.forEach((channel, ext) -> {
+            threadPoolTaskExecutor.execute(() -> sendMsg(channel, msg));
+        });
+
     }
 
     private void loginSuccess(Channel channel, User user, String token) {
@@ -134,11 +146,11 @@ public class WebSocketServiceImpl implements WebSocketService {
         WSChannelExtraDTO wsChannelExtraDTO = ONLINE_WS_MAP.get(channel);
         wsChannelExtraDTO.setUid(user.getId());
         //推送登录成功消息
-        sendMsg(channel,WebSocketAdapter.buildResp(user,token,roleService.hasPower(user.getId(), RoleEnum.CHAT_MANAGE)));
+        sendMsg(channel, WebSocketAdapter.buildResp(user, token, roleService.hasPower(user.getId(), RoleEnum.CHAT_MANAGE)));
         //发布用户上线成功事件
         user.setLastOptTime(new Date());
         user.refreshIp(NettyUtil.getAttr(channel, NettyUtil.IP));
-        applicationEventPublisher.publishEvent(new UserOnlineEvent(this,user));
+        applicationEventPublisher.publishEvent(new UserOnlineEvent(this, user));
     }
 
     private void sendMsg(Channel channel, WSBaseResp<?> resp) {

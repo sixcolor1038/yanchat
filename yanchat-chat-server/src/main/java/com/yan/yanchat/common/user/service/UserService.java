@@ -1,6 +1,7 @@
 package com.yan.yanchat.common.user.service;
 
 import com.yan.yanchat.common.user.domain.entity.User;
+import com.yan.yanchat.common.user.domain.vo.req.BlackReq;
 import com.yan.yanchat.common.user.domain.vo.resp.BadgeResp;
 import com.yan.yanchat.common.user.domain.vo.resp.UserInfoResp;
 import org.springframework.stereotype.Service;
@@ -24,4 +25,6 @@ public interface UserService {
     List<BadgeResp> badges(Long uid);
 
     void wearingBadge(Long uid, Long itemId);
+
+    void black(BlackReq req);
 }

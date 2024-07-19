@@ -1,20 +1,26 @@
 package com.yan.yanchat.common.user.service.impl;
 
+import com.yan.yanchat.common.infrastructure.event.UserBlackEvent;
 import com.yan.yanchat.common.infrastructure.event.UserRegisterEvent;
 import com.yan.yanchat.common.infrastructure.utils.AssertUtil;
+import com.yan.yanchat.common.user.dao.BlackDao;
 import com.yan.yanchat.common.user.dao.ItemConfigDao;
 import com.yan.yanchat.common.user.dao.UserBackpackDao;
 import com.yan.yanchat.common.user.dao.UserDao;
+import com.yan.yanchat.common.user.domain.entity.Black;
 import com.yan.yanchat.common.user.domain.entity.ItemConfig;
 import com.yan.yanchat.common.user.domain.entity.User;
 import com.yan.yanchat.common.user.domain.entity.UserBackpack;
+import com.yan.yanchat.common.user.domain.enums.BlackTypeEnum;
 import com.yan.yanchat.common.user.domain.enums.ItemEnum;
 import com.yan.yanchat.common.user.domain.enums.ItemTypeEnum;
+import com.yan.yanchat.common.user.domain.vo.req.BlackReq;
 import com.yan.yanchat.common.user.domain.vo.resp.BadgeResp;
 import com.yan.yanchat.common.user.domain.vo.resp.UserInfoResp;
 import com.yan.yanchat.common.user.service.UserService;
 import com.yan.yanchat.common.user.service.adapter.UserAdapter;
 import com.yan.yanchat.common.user.service.cache.ItemCache;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
@@ -41,6 +47,8 @@ public class UserServiceImpl implements UserService {
     private ItemCache itemCache;
     @Autowired
     private ApplicationEventPublisher applicationEventPublisher;
+    @Autowired
+    private BlackDao blackDao;
 
     @Override
     @Transactional
@@ -91,5 +99,33 @@ public class UserServiceImpl implements UserService {
         ItemConfig itemConfig = itemConfigDao.getById(firstValidItem.getItemId());
         AssertUtil.equal(itemConfig.getType(),ItemTypeEnum.BADGE.getType(),"只有徽章才能佩戴");
         userDao.wearingBadge(uid,itemId);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void black(BlackReq req) {
+        Long uid = req.getUid();
+        Black user = new Black();
+        user.setType(BlackTypeEnum.UID.getType());
+        user.setTarget(uid.toString());
+        blackDao.save(user);
+        User byId = userDao.getById(uid);
+        blackIp(byId.getIpInfo().getCreateIp());
+        blackIp(byId.getIpInfo().getUpdateIp());
+        applicationEventPublisher.publishEvent(new UserBlackEvent(this,byId));
+    }
+
+    /**
+     * 拉黑ip
+     * @param ip ip信息
+     */
+    private void blackIp(String ip) {
+        if (StringUtils.isBlank(ip)){
+            return;
+        }
+        Black insert = new Black();
+        insert.setType(BlackTypeEnum.IP.getType());
+        insert.setTarget(ip);
+        blackDao.save(insert);
     }
 }
