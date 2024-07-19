@@ -1,5 +1,6 @@
 package com.yan.yanchat.common.infrastructure.domain.vo.resp;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.yan.yanchat.common.infrastructure.exception.ErrorEnum;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -11,6 +12,7 @@ import lombok.Data;
  * @Description: 通用返回体
  */
 @Data
+@JsonIgnoreProperties(ignoreUnknown = true)
 @ApiModel("基础返回体")
 public class ApiResult<T> {
     @ApiModelProperty("成功标识true or false")

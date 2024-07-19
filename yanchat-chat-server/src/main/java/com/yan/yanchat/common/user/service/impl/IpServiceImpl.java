@@ -15,6 +15,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -51,7 +52,7 @@ public class IpServiceImpl implements IpService {
                 return;
             }
             IpDetail ipDetail = tryGetIpDetailOrNullTreeTimes(ip);
-            if (Objects.nonNull(ipDetail)){
+            if (Objects.nonNull(ipDetail)) {
                 ipInfo.refreshIpDetail(ipDetail);
                 User update = new User();
                 update.setId(uid);
@@ -61,7 +62,7 @@ public class IpServiceImpl implements IpService {
         });
     }
 
-    private IpDetail tryGetIpDetailOrNullTreeTimes(String ip) {
+    private static IpDetail tryGetIpDetailOrNullTreeTimes(String ip) {
         for (int i = 0; i < 3; i++) {
             IpDetail ipDetail = getIpDetailOrNull(ip);
             if (Objects.nonNull(ipDetail)) {
@@ -77,11 +78,31 @@ public class IpServiceImpl implements IpService {
     }
 
     //获取IP详情或null
-    private IpDetail getIpDetailOrNull(String ip) {
-        String url = HttpUtil.get("https://ip.taobao.com/outGetIpInfo?ip=" + ip + "&accessKey=alibaba-inc");
-        String data = HttpUtil.get(url);
-        ApiResult<IpDetail> ipDetailApiResult = JsonUtils.toObj(data, new TypeReference<ApiResult<IpDetail>>() {
-        });
-        return ipDetailApiResult.getData();
+    private static IpDetail getIpDetailOrNull(String ip) {
+        try {
+            String url = "https://ip.taobao.com/outGetIpInfo?ip=" + ip + "&accessKey=alibaba-inc";
+            String data = HttpUtil.get(url);
+            ApiResult<IpDetail> ipDetailApiResult = JsonUtils.toObj(data, new TypeReference<ApiResult<IpDetail>>() {
+            });
+            return ipDetailApiResult.getData();
+        } catch (Exception e) {
+            return null;
+        }
     }
+
+    public static void main(String[] args) {
+        Date begin = new Date();
+        for (int i = 1; i <= 100; i++) {
+            int finalI = i;
+            executor.execute(() -> {
+                IpDetail ipDetail = tryGetIpDetailOrNullTreeTimes("117.85.133.4");
+                if (Objects.nonNull(ipDetail)) {
+                    Date date = new Date();
+                    System.out.println(String.format("第%d次成功，目前耗时%dms", finalI, date.getTime() - begin.getTime()));
+                }
+            });
+        }
+    }
+
+
 }
