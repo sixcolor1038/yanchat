@@ -7,10 +7,7 @@ import com.yan.yanchat.common.user.dao.BlackDao;
 import com.yan.yanchat.common.user.dao.ItemConfigDao;
 import com.yan.yanchat.common.user.dao.UserBackpackDao;
 import com.yan.yanchat.common.user.dao.UserDao;
-import com.yan.yanchat.common.user.domain.entity.Black;
-import com.yan.yanchat.common.user.domain.entity.ItemConfig;
-import com.yan.yanchat.common.user.domain.entity.User;
-import com.yan.yanchat.common.user.domain.entity.UserBackpack;
+import com.yan.yanchat.common.user.domain.entity.*;
 import com.yan.yanchat.common.user.domain.enums.BlackTypeEnum;
 import com.yan.yanchat.common.user.domain.enums.ItemEnum;
 import com.yan.yanchat.common.user.domain.enums.ItemTypeEnum;
@@ -20,6 +17,7 @@ import com.yan.yanchat.common.user.domain.vo.resp.UserInfoResp;
 import com.yan.yanchat.common.user.service.UserService;
 import com.yan.yanchat.common.user.service.adapter.UserAdapter;
 import com.yan.yanchat.common.user.service.cache.ItemCache;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -27,6 +25,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -35,6 +34,7 @@ import java.util.stream.Collectors;
  * @Description:
  */
 @Service
+@Slf4j
 public class UserServiceImpl implements UserService {
 
     @Autowired
@@ -55,7 +55,7 @@ public class UserServiceImpl implements UserService {
     public Long register(User insert) {
         userDao.save(insert);
         //用户注册时间
-        applicationEventPublisher.publishEvent(new UserRegisterEvent(this,insert));
+        applicationEventPublisher.publishEvent(new UserRegisterEvent(this, insert));
         return insert.getId();
     }
 
@@ -97,8 +97,8 @@ public class UserServiceImpl implements UserService {
         UserBackpack firstValidItem = userBackpackDao.getFirstValidItem(uid, itemId);
         AssertUtil.isNotEmpty(firstValidItem, "您还没有这个徽章，快去获得吧");
         ItemConfig itemConfig = itemConfigDao.getById(firstValidItem.getItemId());
-        AssertUtil.equal(itemConfig.getType(),ItemTypeEnum.BADGE.getType(),"只有徽章才能佩戴");
-        userDao.wearingBadge(uid,itemId);
+        AssertUtil.equal(itemConfig.getType(), ItemTypeEnum.BADGE.getType(), "只有徽章才能佩戴");
+        userDao.wearingBadge(uid, itemId);
     }
 
     @Override
@@ -110,22 +110,27 @@ public class UserServiceImpl implements UserService {
         user.setTarget(uid.toString());
         blackDao.save(user);
         User byId = userDao.getById(uid);
-        blackIp(byId.getIpInfo().getCreateIp());
-        blackIp(byId.getIpInfo().getUpdateIp());
-        applicationEventPublisher.publishEvent(new UserBlackEvent(this,byId));
+        blackIp(Optional.ofNullable(byId.getIpInfo()).map(IpInfo::getCreateIp).orElse(null));
+        blackIp(Optional.ofNullable(byId.getIpInfo()).map(IpInfo::getUpdateIp).orElse(null));
+        applicationEventPublisher.publishEvent(new UserBlackEvent(this, byId));
     }
 
     /**
      * 拉黑ip
+     *
      * @param ip ip信息
      */
     private void blackIp(String ip) {
-        if (StringUtils.isBlank(ip)){
+        if (StringUtils.isBlank(ip)) {
             return;
         }
-        Black insert = new Black();
-        insert.setType(BlackTypeEnum.IP.getType());
-        insert.setTarget(ip);
-        blackDao.save(insert);
+        try {
+            Black insert = new Black();
+            insert.setType(BlackTypeEnum.IP.getType());
+            insert.setTarget(ip);
+            blackDao.save(insert);
+        } catch (Exception e) {
+            log.error("duplicate black ip:{}", ip);
+        }
     }
 }

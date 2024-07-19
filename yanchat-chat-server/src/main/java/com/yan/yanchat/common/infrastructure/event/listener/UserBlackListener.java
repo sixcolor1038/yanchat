@@ -6,6 +6,7 @@ import com.yan.yanchat.common.user.domain.entity.User;
 import com.yan.yanchat.common.user.domain.enums.IdempotentEnum;
 import com.yan.yanchat.common.user.domain.enums.ItemEnum;
 import com.yan.yanchat.common.user.service.UserBackpackService;
+import com.yan.yanchat.common.user.service.cache.UserCache;
 import com.yan.yanchat.common.websocket.service.WebSocketService;
 import com.yan.yanchat.common.websocket.service.adapter.WebSocketAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,8 @@ public class UserBlackListener {
     private UserDao userDao;
     @Autowired
     private WebSocketService webSocketService;
+    @Autowired
+    private UserCache userCache;
 
     /**
      * 给用户推送拉黑信息
@@ -44,6 +47,12 @@ public class UserBlackListener {
     @TransactionalEventListener(classes = UserBlackEvent.class, phase = TransactionPhase.AFTER_COMMIT)
     public void changeUserStatus(UserBlackEvent event) {
         userDao.invalidUid(event.getUser().getId());
+    }
+
+    @Async
+    @TransactionalEventListener(classes = UserBlackEvent.class, phase = TransactionPhase.AFTER_COMMIT)
+    public void evictCache(UserBlackEvent event) {
+        userCache.evictBlackMap();
     }
 
 
