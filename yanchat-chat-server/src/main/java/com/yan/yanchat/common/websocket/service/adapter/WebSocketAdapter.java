@@ -1,5 +1,6 @@
 package com.yan.yanchat.common.websocket.service.adapter;
 
+import com.yan.yanchat.common.infrastructure.domain.enums.BaseEnum;
 import com.yan.yanchat.common.user.domain.entity.User;
 import com.yan.yanchat.common.websocket.domain.enums.WSRespTypeEnum;
 import com.yan.yanchat.common.websocket.domain.vo.resp.WSBaseResp;
@@ -25,7 +26,7 @@ public class WebSocketAdapter {
         return resp;
     }
 
-    public static WSBaseResp<?> buildResp(User user, String token) {
+    public static WSBaseResp<?> buildResp(User user, String token, boolean power) {
         WSBaseResp<WSLoginSuccess> resp = new WSBaseResp<>();
         resp.setType(WSRespTypeEnum.LOGIN_SUCCESS.getType());
         WSLoginSuccess build = WSLoginSuccess.builder()
@@ -33,6 +34,7 @@ public class WebSocketAdapter {
                 .name(user.getName())
                 .token(token)
                 .uid(user.getId())
+                .power(power ? BaseEnum.YES.getStatus() : BaseEnum.NO.getStatus())
                 .build();
         resp.setData(build);
         return resp;

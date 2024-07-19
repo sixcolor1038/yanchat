@@ -1,10 +1,11 @@
 package com.yan.yanchat.common.user.dao;
 
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yan.yanchat.common.user.domain.entity.UserRole;
 import com.yan.yanchat.common.user.mapper.UserRoleMapper;
-import com.yan.yanchat.common.user.service.UserRoleService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @Author: sixcolor
@@ -12,6 +13,11 @@ import org.springframework.stereotype.Service;
  * @Description: 用户角色关系表 服务实现类
  */
 @Service
-public class UserRoleDao extends ServiceImpl<UserRoleMapper, UserRole> implements UserRoleService {
+public class UserRoleDao extends ServiceImpl<UserRoleMapper, UserRole> {
 
+    public List<UserRole> listByUid(Long uid) {
+        return lambdaQuery()
+                .eq(UserRole::getUid, uid)
+                .list();
+    }
 }

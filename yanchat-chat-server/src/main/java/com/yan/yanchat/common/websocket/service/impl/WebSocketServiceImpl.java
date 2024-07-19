@@ -8,7 +8,10 @@ import com.yan.yanchat.common.infrastructure.event.UserOnlineEvent;
 import com.yan.yanchat.common.user.dao.UserDao;
 import com.yan.yanchat.common.user.domain.entity.IpInfo;
 import com.yan.yanchat.common.user.domain.entity.User;
+import com.yan.yanchat.common.user.domain.enums.RoleEnum;
 import com.yan.yanchat.common.user.service.LoginService;
+import com.yan.yanchat.common.user.service.RoleService;
+import com.yan.yanchat.common.user.service.UserRoleService;
 import com.yan.yanchat.common.websocket.NettyUtil;
 import com.yan.yanchat.common.websocket.domain.dto.WSChannelExtraDTO;
 import com.yan.yanchat.common.websocket.domain.vo.resp.WSBaseResp;
@@ -46,6 +49,8 @@ public class WebSocketServiceImpl implements WebSocketService {
     private LoginService loginService;
     @Autowired
     private ApplicationEventPublisher applicationEventPublisher;
+    @Autowired
+    private RoleService roleService;
 
     /**
      * 管理所有用户的连接(包括登录态/游客)
@@ -129,7 +134,7 @@ public class WebSocketServiceImpl implements WebSocketService {
         WSChannelExtraDTO wsChannelExtraDTO = ONLINE_WS_MAP.get(channel);
         wsChannelExtraDTO.setUid(user.getId());
         //推送登录成功消息
-        sendMsg(channel,WebSocketAdapter.buildResp(user,token));
+        sendMsg(channel,WebSocketAdapter.buildResp(user,token,roleService.hasPower(user.getId(), RoleEnum.CHAT_MANAGE)));
         //发布用户上线成功事件
         user.setLastOptTime(new Date());
         user.refreshIp(NettyUtil.getAttr(channel, NettyUtil.IP));

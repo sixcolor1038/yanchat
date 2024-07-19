@@ -12,6 +12,6 @@ import org.springframework.stereotype.Service;
  * @Description: 黑名单 服务实现类
  */
 @Service
-public class BlackDao extends ServiceImpl<BlackMapper, Black> implements BlackService {
+public class BlackDao extends ServiceImpl<BlackMapper, Black>{
 
 }
