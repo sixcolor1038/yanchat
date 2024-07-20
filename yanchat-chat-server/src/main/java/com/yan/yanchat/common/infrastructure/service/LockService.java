@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * @Author: sixcolor
- * @Date: 2024-02-16 20:53
+ * @Date: 2024-02-16
  * @Description: 分布式锁-编程式
  */
 @Service
