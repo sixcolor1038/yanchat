@@ -14,7 +14,7 @@ import org.springframework.transaction.event.TransactionalEventListener;
 
 /**
  * @Author: sixcolor
- * @Date: 2024-02-18 10:59
+ * @Date: 2024-02-18
  * @Description: 用户注册监听事件
  */
 @Component

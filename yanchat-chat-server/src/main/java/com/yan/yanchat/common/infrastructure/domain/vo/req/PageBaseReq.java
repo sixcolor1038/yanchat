@@ -10,7 +10,7 @@ import javax.validation.constraints.Min;
 
 /**
  * @Author: sixcolor
- * @Date: 2024-02-16 14:22
+ * @Date: 2024-02-16
  * @Description: 基础翻页请求
  */
 @Data

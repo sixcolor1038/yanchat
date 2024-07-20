@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
 
 /**
  * @Author: sixcolor
- * @Date: 2024-02-15 19:16
+ * @Date: 2024-02-15
  * @Description:
  */
 @Configuration

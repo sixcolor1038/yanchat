@@ -12,7 +12,7 @@ import java.util.List;
 
 /**
  * @Author: sixcolor
- * @Date: 2024-02-16 14:22
+ * @Date: 2024-02-16
  * @Description: 基础翻页返回
  */
 @Data
