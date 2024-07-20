@@ -11,6 +11,11 @@ import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
+/**
+ * @Author: sixcolor
+ * @Date: 2024-02-14
+ * @Description:
+ */
 @Component
 public class ScanHandler extends AbstractHandler {
     @Autowired

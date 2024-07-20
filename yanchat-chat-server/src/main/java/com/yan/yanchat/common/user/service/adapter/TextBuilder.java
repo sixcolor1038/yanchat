@@ -1,13 +1,12 @@
 package com.yan.yanchat.common.user.service.adapter;
 
-import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlMessage;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlOutMessage;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlOutTextMessage;
 
 /**
  * @Author: sixcolor
- * @Date: 2024-02-14 21:20
+ * @Date: 2024-02-14
  * @Description:
  */
 public class TextBuilder {

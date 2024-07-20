@@ -27,7 +27,7 @@ import java.util.List;
 
 /**
  * @Author: sixcolor
- * @Date: 2024-02-16 11:04
+ * @Date: 2024-02-16
  * @Description: swagger配置类
  */
 @Configuration
