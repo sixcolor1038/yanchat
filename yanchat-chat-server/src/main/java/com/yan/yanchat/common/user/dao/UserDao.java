@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 /**
  * @Author: sixcolor
- * @Date: 2024-02-14 18:22
+ * @Date: 2024-02-14
  * @Description: 用户表 服务实现类
  */
 @Service

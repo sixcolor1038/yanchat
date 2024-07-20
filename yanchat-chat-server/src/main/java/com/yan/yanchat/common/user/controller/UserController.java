@@ -22,7 +22,7 @@ import java.util.List;
 
 /**
  * @Author: sixcolor
- * @Date: 2024-02-14 18:22
+ * @Date: 2024-02-14
  * @Description: 用户表 前端控制器
  */
 @Slf4j
