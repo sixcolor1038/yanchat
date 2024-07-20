@@ -22,7 +22,7 @@ import static me.chanjar.weixin.common.api.WxConsts.XmlMsgType.EVENT;
 
 /**
  * @Author: sixcolor
- * @Date: 2024-02-14 18:22
+ * @Date: 2024-02-14
  * @Description: wechat mp configuration
  */
 @AllArgsConstructor

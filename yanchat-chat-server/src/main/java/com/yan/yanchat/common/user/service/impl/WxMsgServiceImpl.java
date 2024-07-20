@@ -24,7 +24,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @Author: sixcolor
- * @Date: 2024-02-14 07:45
+ * @Date: 2024-02-14
  * @Description:
  */
 @Service
@@ -68,7 +68,7 @@ public class WxMsgServiceImpl implements WxMsgService {
         //用户已注册并授权
         if (registered && authorized) {
             //走登录成功逻辑，通过code找到给channel推送消息
-            webSocketService.scanLoginSuccess(code,user.getId());
+            webSocketService.scanLoginSuccess(code, user.getId());
             return null;
         }
         //如果用户未注册，就先注册
@@ -78,7 +78,7 @@ public class WxMsgServiceImpl implements WxMsgService {
         }
 
         //推送链接让用户授权
-        WAIT_AUTHORIZE_MAP.put(openId,code);
+        WAIT_AUTHORIZE_MAP.put(openId, code);
         webSocketService.waitAuthorize(code);
         String authorizeUrl = String.format(URL, wxMpService.getWxMpConfigStorage().getAppId(), URLEncoder.encode(callback + "/wx/portal/public/callBack"));
         // 扫码事件处理
@@ -96,7 +96,7 @@ public class WxMsgServiceImpl implements WxMsgService {
         }
         //通过code找到用户channel进行登录
         Integer code = WAIT_AUTHORIZE_MAP.remove(openid);
-        webSocketService.scanLoginSuccess(code,user.getId());
+        webSocketService.scanLoginSuccess(code, user.getId());
     }
 
     //更新用户信息

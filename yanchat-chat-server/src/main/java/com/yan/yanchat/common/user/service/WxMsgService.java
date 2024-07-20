@@ -7,13 +7,13 @@ import me.chanjar.weixin.mp.bean.message.WxMpXmlOutMessage;
 
 /**
  * @Author: sixcolor
- * @Date: 2024-02-14 07:45
+ * @Date: 2024-02-14
  * @Description:
  */
 public interface WxMsgService {
     /**
      * 用户扫码成功
-     * @param wxMessage
+     * @param wxMpXmlMessage
      * @return
      */
     WxMpXmlOutMessage scan(WxMpService wxMpService, WxMpXmlMessage wxMpXmlMessage);

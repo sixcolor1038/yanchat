@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
  * @Author: sixcolor
- * @Date: 2024-02-18 12:16
+ * @Date: 2024-02-18
  * @Description: 用户角色关系表 Mapper 接口
  */
 public interface UserRoleMapper extends BaseMapper<UserRole> {

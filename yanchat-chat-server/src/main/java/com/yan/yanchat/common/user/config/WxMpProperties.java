@@ -8,7 +8,7 @@ import java.util.List;
 
 /**
  * @Author: sixcolor
- * @Date: 2024-02-14 18:22
+ * @Date: 2024-02-14
  * @Description: wechat mp properties
  */
 @Data

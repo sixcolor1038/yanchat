@@ -18,7 +18,7 @@ import org.springframework.web.servlet.view.RedirectView;
 
 /**
  * @Author: sixcolor
- * @Date: 2024-02-14 18:22
+ * @Date: 2024-02-14
  * @Description: 微信api交互接口
  */
 @Slf4j
