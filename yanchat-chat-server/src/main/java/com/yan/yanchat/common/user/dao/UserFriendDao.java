@@ -1,6 +1,9 @@
 package com.yan.yanchat.common.user.dao;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.yan.yanchat.common.infrastructure.domain.vo.req.CursorPageBaseReq;
+import com.yan.yanchat.common.infrastructure.domain.vo.resp.CursorPageBaseResp;
+import com.yan.yanchat.common.infrastructure.utils.CursorUtils;
 import com.yan.yanchat.common.user.domain.entity.UserFriend;
 import com.yan.yanchat.common.user.mapper.UserFriendMapper;
 import org.springframework.stereotype.Service;
@@ -30,5 +33,11 @@ public class UserFriendDao extends ServiceImpl<UserFriendMapper, UserFriend> {
                 .eq(UserFriend::getUid, friendUid)
                 .select(UserFriend::getId)
                 .list();
+    }
+
+    public CursorPageBaseResp<UserFriend> getFriendPage(Long uid, CursorPageBaseReq request) {
+        return CursorUtils
+                .getCursorPageByMysql(this, request,
+                wrapper -> wrapper.eq(UserFriend::getUid, uid), UserFriend::getId);
     }
 }

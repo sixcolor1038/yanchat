@@ -6,6 +6,8 @@ import com.yan.yanchat.common.user.domain.entity.User;
 import com.yan.yanchat.common.user.mapper.UserMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @Author: sixcolor
  * @Date: 2024-02-14
@@ -42,5 +44,12 @@ public class UserDao extends ServiceImpl<UserMapper, User> {
                 .eq(User::getId, uid)
                 .set(User::getStatus, BaseEnum.YES.getStatus())
                 .update();
+    }
+
+    public List<User> getFriendList(List<Long> uidList) {
+        return lambdaQuery()
+                .in(User::getId, uidList)
+                .select(User::getId, User::getActiveStatus, User::getName, User::getAvatar)
+                .list();
     }
 }

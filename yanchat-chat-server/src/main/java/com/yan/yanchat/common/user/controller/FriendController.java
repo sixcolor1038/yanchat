@@ -1,9 +1,12 @@
 package com.yan.yanchat.common.user.controller;
 
+import com.yan.yanchat.common.infrastructure.domain.vo.req.CursorPageBaseReq;
 import com.yan.yanchat.common.infrastructure.domain.vo.resp.ApiResult;
+import com.yan.yanchat.common.infrastructure.domain.vo.resp.CursorPageBaseResp;
 import com.yan.yanchat.common.infrastructure.utils.RequestHolder;
 import com.yan.yanchat.common.user.domain.vo.req.FriendApplyReq;
 import com.yan.yanchat.common.user.domain.vo.req.FriendDeleteReq;
+import com.yan.yanchat.common.user.domain.vo.resp.FriendResp;
 import com.yan.yanchat.common.user.service.FriendService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -26,6 +29,13 @@ public class FriendController {
 
     @Autowired
     private FriendService friendService;
+
+    @GetMapping("/page")
+    @ApiOperation("联系人列表")
+    public ApiResult<CursorPageBaseResp<FriendResp>> friendList(@Valid CursorPageBaseReq request) {
+        Long uid = RequestHolder.get().getUid();
+        return ApiResult.success(friendService.friendList(uid, request));
+    }
 
     @PostMapping("apply")
     @ApiOperation("申请好友")

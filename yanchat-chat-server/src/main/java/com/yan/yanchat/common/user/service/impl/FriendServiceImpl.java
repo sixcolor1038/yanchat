@@ -6,19 +6,26 @@ import com.yan.yanchat.common.chat.domain.entity.RoomFriend;
 import com.yan.yanchat.common.chat.service.ChatService;
 import com.yan.yanchat.common.chat.service.RoomService;
 import com.yan.yanchat.common.chat.service.adapter.MessageAdapter;
+import com.yan.yanchat.common.infrastructure.domain.vo.req.CursorPageBaseReq;
+import com.yan.yanchat.common.infrastructure.domain.vo.resp.CursorPageBaseResp;
 import com.yan.yanchat.common.infrastructure.utils.AssertUtil;
 import com.yan.yanchat.common.user.dao.UserApplyDao;
+import com.yan.yanchat.common.user.dao.UserDao;
 import com.yan.yanchat.common.user.dao.UserFriendDao;
+import com.yan.yanchat.common.user.domain.entity.User;
 import com.yan.yanchat.common.user.domain.entity.UserApply;
 import com.yan.yanchat.common.user.domain.entity.UserFriend;
 import com.yan.yanchat.common.user.domain.enums.ApplyStatusEnum;
 import com.yan.yanchat.common.user.domain.vo.req.FriendApplyReq;
 import com.yan.yanchat.common.user.domain.vo.req.FriendApproveReq;
+import com.yan.yanchat.common.user.domain.vo.resp.FriendResp;
 import com.yan.yanchat.common.user.service.FriendService;
+import com.yan.yanchat.common.user.service.adapter.FriendAdapter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.util.Arrays;
 import java.util.List;
@@ -41,6 +48,8 @@ public class FriendServiceImpl implements FriendService {
     private RoomService roomService;
     @Autowired
     private ChatService chatService;
+    @Autowired
+    private UserDao userDao;
 
     @Override
     public void apply(Long uid, FriendApplyReq req) {
@@ -90,6 +99,20 @@ public class FriendServiceImpl implements FriendService {
         userFriendDao.removeByIds(friendRecordIds);
         //禁用房间
         roomService.disableFriendRoom(Arrays.asList(uid, friendUid));
+    }
+
+    @Override
+    public CursorPageBaseResp<FriendResp> friendList(Long uid, CursorPageBaseReq request) {
+        CursorPageBaseResp<UserFriend> friendPage = userFriendDao.getFriendPage(uid, request);
+        if (CollectionUtils.isEmpty(friendPage.getList())) {
+            return CursorPageBaseResp.empty();
+        }
+        List<Long> friendUids = friendPage.getList()
+                .stream().map(UserFriend::getFriendUid)
+                .collect(Collectors.toList());
+        List<User> userList = userDao.getFriendList(friendUids);
+        return CursorPageBaseResp.init(friendPage, FriendAdapter.buildFriend(friendPage.getList(), userList));
+
     }
 
     private void createFriend(Long uid, Long targetUid) {
