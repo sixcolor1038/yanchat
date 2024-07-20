@@ -11,7 +11,7 @@ import me.chanjar.weixin.mp.bean.result.WxMpQrCodeTicket;
 
 /**
  * @Author: sixcolor
- * @Date: 2024-02-14 07:40
+ * @Date: 2024-02-14
  * @Description: websocket适配器
  */
 public class WebSocketAdapter {

@@ -6,7 +6,7 @@ import com.yan.yanchat.common.user.mapper.UserFriendMapper;
 import org.springframework.stereotype.Service;
 
 /**
- * @Author: sixcolor 
+ * @Author: sixcolor
  * @Date: 2024-02-18
  * @Description:
  */

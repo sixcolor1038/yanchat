@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 
 /**
  * @Author: sixcolor
- * @Date: 2024-02-14 10:42
+ * @Date: 2024-02-14
  * @Description:
  */
 @Data
