@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 
 /**
  * @Author: sixcolor
- * @Date: 2024-02-16 17:26
+ * @Date: 2024-02-16
  * @Description: 物品类型枚举
  */
 @AllArgsConstructor
