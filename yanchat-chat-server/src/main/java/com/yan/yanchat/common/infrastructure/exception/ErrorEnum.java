@@ -2,7 +2,7 @@ package com.yan.yanchat.common.infrastructure.exception;
 
 /**
  * @Author: sixcolor
- * @Date: 2024-02-16 21:10
+ * @Date: 2024-02-16
  * @Description:
  */
 public interface ErrorEnum {

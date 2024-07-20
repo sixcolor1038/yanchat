@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 /**
  * @Author: sixcolor
- * @Date: 2024-02-16 20:50
+ * @Date: 2024-02-16
  * @Description: 捕获全局异常
  */
 @Slf4j

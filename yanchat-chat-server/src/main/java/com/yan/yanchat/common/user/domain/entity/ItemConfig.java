@@ -11,7 +11,7 @@ import java.util.Date;
 
 /**
  * @Author: sixcolor
- * @Date: 2024-02-16 08:16
+ * @Date: 2024-02-16
  * @Description: 功能物品配置表
  */
 @Data

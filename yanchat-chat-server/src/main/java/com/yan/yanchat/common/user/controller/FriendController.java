@@ -17,7 +17,7 @@ import javax.validation.Valid;
 
 /**
  * @Author: sixcolor
- * @Date: 2024-02-18 15:18
+ * @Date: 2024-02-18
  * @Description:
  */
 @RestController

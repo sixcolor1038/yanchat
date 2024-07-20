@@ -7,7 +7,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
  * @Author: sixcolor
- * @Date: 2024-02-16 14:55
+ * @Date: 2024-02-16
  * @Description:
  */
 @Configuration
