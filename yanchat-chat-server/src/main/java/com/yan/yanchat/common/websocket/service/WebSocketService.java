@@ -5,7 +5,7 @@ import io.netty.channel.Channel;
 
 /**
  * @Author: sixcolor
- * @Date: 2024-02-15 07:29
+ * @Date: 2024-02-15
  * @Description:
  */
 public interface WebSocketService {

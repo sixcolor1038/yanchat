@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
  * @Author: sixcolor
- * @Date: 2024-02-13 18:58
+ * @Date: 2024-02-13
  * @Description:
  */
 @SpringBootApplication(scanBasePackages = {"com.yan.yanchat"})
