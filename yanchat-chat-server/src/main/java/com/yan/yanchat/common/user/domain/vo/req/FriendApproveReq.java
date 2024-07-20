@@ -6,7 +6,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -18,14 +17,10 @@ import javax.validation.constraints.NotNull;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class FriendApplyReq {
-
-    @NotBlank
-    @ApiModelProperty("申请信息")
-    private String msg;
+public class FriendApproveReq {
 
     @NotNull
-    @ApiModelProperty("好友uid")
-    private Long targetUid;
+    @ApiModelProperty("申请id")
+    private Long applyId;
 
 }

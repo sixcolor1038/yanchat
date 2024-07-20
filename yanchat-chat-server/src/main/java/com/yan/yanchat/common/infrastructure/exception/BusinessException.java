@@ -4,7 +4,7 @@ import lombok.Data;
 
 /**
  * @Author: sixcolor
- * @Date: 2024-02-16 21:21
+ * @Date: 2024-02-16
  * @Description: 业务异常
  */
 @Data

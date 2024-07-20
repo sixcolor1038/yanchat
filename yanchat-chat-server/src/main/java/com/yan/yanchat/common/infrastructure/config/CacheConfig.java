@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * @Author: sixcolor
- * @Date: 2024-02-16 15:16
+ * @Date: 2024-02-16
  * @Description:
  */
 @EnableCaching
