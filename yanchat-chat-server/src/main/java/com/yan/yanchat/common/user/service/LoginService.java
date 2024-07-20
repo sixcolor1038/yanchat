@@ -2,7 +2,7 @@ package com.yan.yanchat.common.user.service;
 
 /**
  * @Author: sixcolor
- * @Date: 2024-02-15 18:16
+ * @Date: 2024-02-15
  * @Description:
  */
 public interface LoginService {
