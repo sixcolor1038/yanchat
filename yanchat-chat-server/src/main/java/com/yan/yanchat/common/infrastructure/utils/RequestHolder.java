@@ -4,7 +4,7 @@ import com.yan.yanchat.common.infrastructure.domain.dto.RequestInfo;
 
 /**
  * @Author: sixcolor
- * @Date: 2024-02-16 15:24
+ * @Date: 2024-02-16
  * @Description: 请求上下文
  */
 public class RequestHolder {

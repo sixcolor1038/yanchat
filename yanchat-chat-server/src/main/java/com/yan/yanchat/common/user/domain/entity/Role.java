@@ -11,7 +11,7 @@ import lombok.EqualsAndHashCode;
 
 /**
  * @Author: sixcolor
- * @Date: 2024-02-18 12:16
+ * @Date: 2024-02-18
  * @Description: 角色表
  */
 @Data

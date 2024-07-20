@@ -8,7 +8,7 @@ import javax.validation.constraints.NotBlank;
 
 /**
  * @Author: sixcolor
- * @Date: 2024-02-16 17:50
+ * @Date: 2024-02-16
  * @Description:
  */
 @Data
