@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
  * @Author: sixcolor
- * @Date: 2024-02-16 08:16
+ * @Date: 2024-02-16
  * @Description: 用户背包表 Mapper 接口
  */
 public interface UserBackpackMapper extends BaseMapper<UserBackpack> {

@@ -15,7 +15,7 @@ import java.util.Objects;
 
 /**
  * @Author: sixcolor
- * @Date: 2024-02-16 08:16
+ * @Date: 2024-02-16
  * @Description: 用户背包表 服务实现类
  */
 @Service
@@ -27,7 +27,7 @@ public class UserBackpackServiceImpl implements UserBackpackService {
     private UserBackpackDao userBackpackDao;
     @Autowired
     @Lazy
-    private  UserBackpackServiceImpl userBackpackServiceImpl;
+    private UserBackpackServiceImpl userBackpackServiceImpl;
 
     @Override
     public void acquireItem(Long uid, Long itemId, IdempotentEnum idempotentEnum, String businessId) {

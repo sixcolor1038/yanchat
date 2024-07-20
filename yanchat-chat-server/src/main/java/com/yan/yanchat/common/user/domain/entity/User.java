@@ -12,7 +12,7 @@ import java.util.Date;
 
 /**
  * @Author: sixcolor
- * @Date: 2024-02-14 18:22
+ * @Date: 2024-02-14
  * @Description: 用户表
  */
 

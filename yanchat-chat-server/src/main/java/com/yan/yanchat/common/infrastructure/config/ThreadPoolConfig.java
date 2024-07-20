@@ -12,7 +12,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * @Author: sixcolor
- * @Date: 2024-02-15 21:32
+ * @Date: 2024-02-15
  * @Description:
  */
 @Configuration

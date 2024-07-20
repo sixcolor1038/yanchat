@@ -1,12 +1,10 @@
 package com.yan.yanchat.common.user.service;
 
-import com.baomidou.mybatisplus.extension.service.IService;
-import com.yan.yanchat.common.user.domain.entity.UserBackpack;
 import com.yan.yanchat.common.user.domain.enums.IdempotentEnum;
 
 /**
  * @Author: sixcolor
- * @Date: 2024-02-16 08:16
+ * @Date: 2024-02-16
  * @Description: 用户背包表 服务类
  */
 public interface UserBackpackService {

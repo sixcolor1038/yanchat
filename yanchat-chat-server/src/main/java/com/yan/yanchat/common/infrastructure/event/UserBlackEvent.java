@@ -6,7 +6,7 @@ import org.springframework.context.ApplicationEvent;
 
 /**
  * @Author: sixcolor
- * @Date: 2024-02-18 11:14
+ * @Date: 2024-02-18
  * @Description:
  */
 @Getter

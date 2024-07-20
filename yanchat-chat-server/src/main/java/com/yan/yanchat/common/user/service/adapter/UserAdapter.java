@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 
 /**
  * @Author: sixcolor
- * @Date: 2024-02-15 16:27
+ * @Date: 2024-02-15
  * @Description: 用户适配器
  */
 public class UserAdapter {

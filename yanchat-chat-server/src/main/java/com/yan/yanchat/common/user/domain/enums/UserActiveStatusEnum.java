@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 
 /**
  * @Author: sixcolor
- * @Date: 2024-02-15 18:22
+ * @Date: 2024-02-15
  * @Description: ws前端请求类型枚举
  */
 @AllArgsConstructor
