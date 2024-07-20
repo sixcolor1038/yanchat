@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 /**
  * @Author: sixcolor
  * @Date: 2024-02-18
- * @Description: 消息状态
+ * @Description: 消息状态枚举
  */
 @AllArgsConstructor
 @Getter
