@@ -14,7 +14,7 @@ import java.util.*;
 
 /**
  * @Author: sixcolor
- * @Date: 2024-02-16 22:48
+ * @Date: 2024-02-16
  * @Description: 校验工具类
  */
 public class AssertUtil {

@@ -6,7 +6,7 @@ import lombok.Data;
 
 /**
  * @Author: sixcolor
- * @Date: 2024-02-16 15:27
+ * @Date: 2024-02-16
  * @Description: 徽章信息
  */
 @Data

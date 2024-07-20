@@ -7,7 +7,7 @@ import org.springframework.stereotype.Controller;
 
 /**
  * @Author: sixcolor
- * @Date: 2024-02-18 12:16
+ * @Date: 2024-02-18
  * @Description: 黑名单 前端控制器
  */
 @Controller

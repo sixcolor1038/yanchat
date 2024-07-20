@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 
 /**
  * @Author: sixcolor
- * @Date: 2024-02-16 16:07
+ * @Date: 2024-02-16
  * @Description:
  */
 @Data

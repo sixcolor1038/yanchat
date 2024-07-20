@@ -8,7 +8,7 @@ import lombok.Data;
 
 /**
  * @Author: sixcolor
- * @Date: 2024-02-16 14:22
+ * @Date: 2024-02-16
  * @Description: 通用返回体
  */
 @Data
