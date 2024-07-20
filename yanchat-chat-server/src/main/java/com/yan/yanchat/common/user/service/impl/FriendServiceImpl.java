@@ -1,5 +1,6 @@
 package com.yan.yanchat.common.user.service.impl;
 
+import cn.hutool.core.collection.CollectionUtil;
 import com.google.common.collect.Lists;
 import com.yan.yanchat.common.chat.domain.entity.RoomFriend;
 import com.yan.yanchat.common.chat.service.ChatService;
@@ -20,7 +21,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * @Author: sixcolor
@@ -73,6 +76,20 @@ public class FriendServiceImpl implements FriendService {
         RoomFriend roomFriend = roomService.createFriendRoom(Arrays.asList(uid, userApply.getUid()));
         //发送一条同意消息。。我们已经是好友了，开始聊天吧
         chatService.sendMsg(MessageAdapter.buildAgreeMsg(roomFriend.getRoomId()), uid);
+    }
+
+    @Override
+    public void deleteFriend(Long uid, Long friendUid) {
+        //查询用户好友关系
+        List<UserFriend> userFriends = userFriendDao.getUserFriend(uid, friendUid);
+        if (CollectionUtil.isEmpty(userFriends)) {
+            log.info("没有好友关系：{},{}", uid, friendUid);
+            return;
+        }
+        List<Long> friendRecordIds = userFriends.stream().map(UserFriend::getId).collect(Collectors.toList());
+        userFriendDao.removeByIds(friendRecordIds);
+        //禁用房间
+        roomService.disableFriendRoom(Arrays.asList(uid, friendUid));
     }
 
     private void createFriend(Long uid, Long targetUid) {

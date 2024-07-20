@@ -18,4 +18,11 @@ public interface FriendService {
      * @param request 请求
      */
     void applyApprove(Long uid, FriendApproveReq request);
+
+    /**
+     * 删除好友
+     * @param uid 用户id
+     * @param targetUid 好友用户id
+     */
+    void deleteFriend(Long uid, Long targetUid);
 }

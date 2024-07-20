@@ -6,7 +6,7 @@ import lombok.Getter;
 /**
  * @Author: sixcolor
  * @Date: 2024-02-16
- * @Description:
+ * @Description: 幂等号枚举
  */
 @AllArgsConstructor
 @Getter

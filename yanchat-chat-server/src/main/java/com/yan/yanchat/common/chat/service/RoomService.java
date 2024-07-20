@@ -11,4 +11,10 @@ import java.util.List;
  */
 public interface RoomService {
     RoomFriend createFriendRoom(List<Long> list);
+
+    /**
+     * 禁用房间
+     * @param list
+     */
+    void disableFriendRoom(List<Long> list);
 }

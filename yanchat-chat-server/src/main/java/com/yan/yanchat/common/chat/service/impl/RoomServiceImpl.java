@@ -18,7 +18,7 @@ import java.util.Objects;
 /**
  * @Author: sixcolor
  * @Date: 2024-02-27
- * @Description: 房间底层管理
+ * @Description: 房间 服务实现类
  */
 @Service
 public class RoomServiceImpl implements RoomService {
@@ -43,6 +43,14 @@ public class RoomServiceImpl implements RoomService {
             roomFriend = createFriendRoom(room.getId(), uidList);
         }
         return roomFriend;
+    }
+
+    @Override
+    public void disableFriendRoom(List<Long> uidList) {
+        AssertUtil.isNotEmpty(uidList, "房间创建失败，好友数量不对");
+        AssertUtil.equal(uidList.size(), 2, "房间创建失败，好友数量不对");
+        String key = ChatAdapter.generateRoomKey(uidList);
+        roomFriendDao.disableRoom(key);
     }
 
     private RoomFriend createFriendRoom(Long roomId, List<Long> uidList) {
