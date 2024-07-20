@@ -17,7 +17,7 @@ import java.util.Optional;
 /**
  * @Author: sixcolor
  * @Date: 2024-02-15
- * @Description:
+ * @Description: jwt工具类
  */
 @Component
 @Slf4j

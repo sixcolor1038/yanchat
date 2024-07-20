@@ -6,7 +6,7 @@ import java.util.Map;
 /**
  * @Author: sixcolor
  * @Date: 2024-02-18
- * @Description:
+ * @Description: 批量缓存
  */
 public interface BatchCache<IN, OUT> {
     /**
