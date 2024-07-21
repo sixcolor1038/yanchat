@@ -34,10 +34,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -88,7 +85,7 @@ public class FriendServiceImpl implements FriendService {
         //同意申请
         userApplyDao.agree(request.getApplyId());
         //创建双方好友关系
-        createFriend(uid, userApply.getUid());
+        userFriendDao.saveBatch(FriendAdapter.buildFriend(uid, userApply.getUid()));
         //创建一个聊天房间
         RoomFriend roomFriend = roomService.createFriendRoom(Arrays.asList(uid, userApply.getUid()));
         //发送一条同意消息。。我们已经是好友了，开始聊天吧
@@ -167,13 +164,4 @@ public class FriendServiceImpl implements FriendService {
         userApplyDao.readApples(uid, applyIds);
     }
 
-    private void createFriend(Long uid, Long targetUid) {
-        UserFriend userFriend1 = new UserFriend();
-        userFriend1.setUid(uid);
-        userFriend1.setFriendUid(targetUid);
-        UserFriend userFriend2 = new UserFriend();
-        userFriend2.setUid(targetUid);
-        userFriend2.setFriendUid(uid);
-        userFriendDao.saveBatch(Lists.newArrayList(userFriend1, userFriend2));
-    }
 }

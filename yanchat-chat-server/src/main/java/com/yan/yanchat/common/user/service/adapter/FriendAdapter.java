@@ -1,11 +1,13 @@
 package com.yan.yanchat.common.user.service.adapter;
 
+import com.google.common.collect.Lists;
 import com.yan.yanchat.common.user.domain.entity.User;
 import com.yan.yanchat.common.user.domain.entity.UserApply;
 import com.yan.yanchat.common.user.domain.entity.UserFriend;
-import com.yan.yanchat.common.user.domain.vo.resp.friend.FriendResp;
 import com.yan.yanchat.common.user.domain.vo.resp.friend.FriendApplyResp;
+import com.yan.yanchat.common.user.domain.vo.resp.friend.FriendResp;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -40,5 +42,22 @@ public class FriendAdapter {
             friendApplyResp.setStatus(userApply.getStatus());
             return friendApplyResp;
         }).collect(Collectors.toList());
+    }
+
+    /**
+     * 建立好友关系
+     *
+     * @param uid       用户id
+     * @param targetUid 申请者id
+     * @return 用户关系集合
+     */
+    public static ArrayList<UserFriend> buildFriend(Long uid, Long targetUid) {
+        UserFriend userFriend1 = new UserFriend();
+        userFriend1.setUid(uid);
+        userFriend1.setFriendUid(targetUid);
+        UserFriend userFriend2 = new UserFriend();
+        userFriend2.setUid(targetUid);
+        userFriend2.setFriendUid(uid);
+        return Lists.newArrayList(userFriend1, userFriend2);
     }
 }
