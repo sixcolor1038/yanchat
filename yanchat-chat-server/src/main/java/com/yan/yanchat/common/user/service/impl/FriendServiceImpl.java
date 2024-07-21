@@ -21,8 +21,10 @@ import com.yan.yanchat.common.user.domain.entity.UserFriend;
 import com.yan.yanchat.common.user.domain.enums.ApplyStatusEnum;
 import com.yan.yanchat.common.user.domain.vo.req.friend.FriendApplyReq;
 import com.yan.yanchat.common.user.domain.vo.req.friend.FriendApproveReq;
-import com.yan.yanchat.common.user.domain.vo.resp.friend.FriendResp;
+import com.yan.yanchat.common.user.domain.vo.req.friend.FriendCheckReq;
 import com.yan.yanchat.common.user.domain.vo.resp.friend.FriendApplyResp;
+import com.yan.yanchat.common.user.domain.vo.resp.friend.FriendCheckResp;
+import com.yan.yanchat.common.user.domain.vo.resp.friend.FriendResp;
 import com.yan.yanchat.common.user.domain.vo.resp.friend.FriendUnreadResp;
 import com.yan.yanchat.common.user.service.FriendService;
 import com.yan.yanchat.common.user.service.adapter.FriendAdapter;
@@ -35,6 +37,7 @@ import org.springframework.util.CollectionUtils;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -136,6 +139,25 @@ public class FriendServiceImpl implements FriendService {
     @Override
     public FriendUnreadResp unread(Long uid) {
         return new FriendUnreadResp(userApplyDao.getUnReadCount(uid));
+    }
+
+    @Override
+    public FriendCheckResp check(Long uid, FriendCheckReq request) {
+        List<UserFriend> friendList = userFriendDao.getByFriends(uid, request.getUidList());
+
+        Set<Long> friendUidSet = friendList.stream()
+                .map(UserFriend::getFriendUid)
+                .collect(Collectors.toSet());
+        List<FriendCheckResp.FriendCheck> friendCheckList = request
+                .getUidList()
+                .stream()
+                .map(friendUid -> {
+                    FriendCheckResp.FriendCheck friendCheck = new FriendCheckResp.FriendCheck();
+                    friendCheck.setUid(friendUid);
+                    friendCheck.setIsFriend(friendUidSet.contains(friendUid));
+                    return friendCheck;
+                }).collect(Collectors.toList());
+        return new FriendCheckResp(friendCheckList);
     }
 
     private void readApples(Long uid, IPage<UserApply> userApplyIPage) {

@@ -6,8 +6,10 @@ import com.yan.yanchat.common.infrastructure.domain.vo.resp.CursorPageBaseResp;
 import com.yan.yanchat.common.infrastructure.domain.vo.resp.PageBaseResp;
 import com.yan.yanchat.common.user.domain.vo.req.friend.FriendApplyReq;
 import com.yan.yanchat.common.user.domain.vo.req.friend.FriendApproveReq;
-import com.yan.yanchat.common.user.domain.vo.resp.friend.FriendResp;
+import com.yan.yanchat.common.user.domain.vo.req.friend.FriendCheckReq;
 import com.yan.yanchat.common.user.domain.vo.resp.friend.FriendApplyResp;
+import com.yan.yanchat.common.user.domain.vo.resp.friend.FriendCheckResp;
+import com.yan.yanchat.common.user.domain.vo.resp.friend.FriendResp;
 import com.yan.yanchat.common.user.domain.vo.resp.friend.FriendUnreadResp;
 
 /**
@@ -59,4 +61,13 @@ public interface FriendService {
      * @return
      */
     FriendUnreadResp unread(Long uid);
+
+    /**
+     * 校验是否为好友
+     *
+     * @param uid
+     * @param request
+     * @return
+     */
+    FriendCheckResp check(Long uid, FriendCheckReq request);
 }

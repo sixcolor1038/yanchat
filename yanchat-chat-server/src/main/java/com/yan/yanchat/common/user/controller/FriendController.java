@@ -7,7 +7,10 @@ import com.yan.yanchat.common.infrastructure.domain.vo.resp.CursorPageBaseResp;
 import com.yan.yanchat.common.infrastructure.domain.vo.resp.PageBaseResp;
 import com.yan.yanchat.common.infrastructure.utils.RequestHolder;
 import com.yan.yanchat.common.user.domain.vo.req.friend.FriendApplyReq;
+import com.yan.yanchat.common.user.domain.vo.req.friend.FriendApproveReq;
+import com.yan.yanchat.common.user.domain.vo.req.friend.FriendCheckReq;
 import com.yan.yanchat.common.user.domain.vo.req.friend.FriendDeleteReq;
+import com.yan.yanchat.common.user.domain.vo.resp.friend.FriendCheckResp;
 import com.yan.yanchat.common.user.domain.vo.resp.friend.FriendResp;
 import com.yan.yanchat.common.user.domain.vo.resp.friend.FriendApplyResp;
 import com.yan.yanchat.common.user.domain.vo.resp.friend.FriendUnreadResp;
@@ -60,12 +63,26 @@ public class FriendController {
         return ApiResult.success(friendService.unread(RequestHolder.get().getUid()));
     }
 
+    @PutMapping("/apply")
+    @ApiOperation("审批同意")
+    public ApiResult<Void> applyApprove(@Valid @RequestBody FriendApproveReq request) {
+        friendService.applyApprove(RequestHolder.get().getUid(), request);
+        return ApiResult.success();
+    }
+
     @DeleteMapping()
     @ApiOperation("删除好友")
     public ApiResult<Void> delete(@Valid @RequestBody FriendDeleteReq request) {
         Long uid = RequestHolder.get().getUid();
         friendService.deleteFriend(uid, request.getTargetUid());
         return ApiResult.success();
+    }
+
+    @GetMapping("/check")
+    @ApiOperation("批量判断是否是自己好友")
+    public ApiResult<FriendCheckResp> check(@Valid FriendCheckReq request) {
+        Long uid = RequestHolder.get().getUid();
+        return ApiResult.success(friendService.check(uid, request));
     }
 
 }
