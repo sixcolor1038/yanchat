@@ -1,4 +1,4 @@
-package com.yan.yanchat.common.user.domain.vo.req;
+package com.yan.yanchat.common.user.domain.vo.req.friend;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -8,20 +8,19 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
 
-
 /**
  * @Author: sixcolor
- * @Date: 2024-04-28
+ * @Date: 2024-02-18
  * @Description: 申请好友信息
  */
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class FriendDeleteReq {
+public class FriendApproveReq {
 
     @NotNull
-    @ApiModelProperty("好友uid")
-    private Long targetUid;
+    @ApiModelProperty("申请id")
+    private Long applyId;
 
 }

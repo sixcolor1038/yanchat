@@ -1,8 +1,10 @@
 package com.yan.yanchat.common.user.service.adapter;
 
 import com.yan.yanchat.common.user.domain.entity.User;
+import com.yan.yanchat.common.user.domain.entity.UserApply;
 import com.yan.yanchat.common.user.domain.entity.UserFriend;
 import com.yan.yanchat.common.user.domain.vo.resp.FriendResp;
+import com.yan.yanchat.common.user.domain.vo.resp.friend.FriendApplyResp;
 
 import java.util.List;
 import java.util.Map;
@@ -25,6 +27,18 @@ public class FriendAdapter {
                 resp.setActiveStatus(user.getActiveStatus());
             }
             return resp;
+        }).collect(Collectors.toList());
+    }
+
+    public static List<FriendApplyResp> buildFriendApplyList(List<UserApply> records) {
+        return records.stream().map(userApply -> {
+            FriendApplyResp friendApplyResp = new FriendApplyResp();
+            friendApplyResp.setUid(userApply.getUid());
+            friendApplyResp.setType(userApply.getType());
+            friendApplyResp.setApplyId(userApply.getId());
+            friendApplyResp.setMsg(userApply.getMsg());
+            friendApplyResp.setStatus(userApply.getStatus());
+            return friendApplyResp;
         }).collect(Collectors.toList());
     }
 }

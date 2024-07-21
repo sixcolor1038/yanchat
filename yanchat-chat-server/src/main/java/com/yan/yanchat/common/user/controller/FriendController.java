@@ -1,12 +1,15 @@
 package com.yan.yanchat.common.user.controller;
 
 import com.yan.yanchat.common.infrastructure.domain.vo.req.CursorPageBaseReq;
+import com.yan.yanchat.common.infrastructure.domain.vo.req.PageBaseReq;
 import com.yan.yanchat.common.infrastructure.domain.vo.resp.ApiResult;
 import com.yan.yanchat.common.infrastructure.domain.vo.resp.CursorPageBaseResp;
+import com.yan.yanchat.common.infrastructure.domain.vo.resp.PageBaseResp;
 import com.yan.yanchat.common.infrastructure.utils.RequestHolder;
-import com.yan.yanchat.common.user.domain.vo.req.FriendApplyReq;
-import com.yan.yanchat.common.user.domain.vo.req.FriendDeleteReq;
+import com.yan.yanchat.common.user.domain.vo.req.friend.FriendApplyReq;
+import com.yan.yanchat.common.user.domain.vo.req.friend.FriendDeleteReq;
 import com.yan.yanchat.common.user.domain.vo.resp.FriendResp;
+import com.yan.yanchat.common.user.domain.vo.resp.friend.FriendApplyResp;
 import com.yan.yanchat.common.user.service.FriendService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -42,6 +45,13 @@ public class FriendController {
     public ApiResult<Void> apply(@Valid @RequestBody FriendApplyReq req) {
         friendService.apply(RequestHolder.get().getUid(), req);
         return ApiResult.success();
+    }
+
+    @GetMapping("/apply/page")
+    @ApiOperation("好友申请列表")
+    public ApiResult<PageBaseResp<FriendApplyResp>> page(@Valid PageBaseReq request) {
+        Long uid = RequestHolder.get().getUid();
+        return ApiResult.success(friendService.pageApplyFriend(RequestHolder.get().getUid(), request));
     }
 
     @DeleteMapping()
