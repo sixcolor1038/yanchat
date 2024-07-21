@@ -3,7 +3,7 @@ package com.yan.yanchat.common.user.service.adapter;
 import com.yan.yanchat.common.user.domain.entity.User;
 import com.yan.yanchat.common.user.domain.entity.UserApply;
 import com.yan.yanchat.common.user.domain.entity.UserFriend;
-import com.yan.yanchat.common.user.domain.vo.resp.FriendResp;
+import com.yan.yanchat.common.user.domain.vo.resp.friend.FriendResp;
 import com.yan.yanchat.common.user.domain.vo.resp.friend.FriendApplyResp;
 
 import java.util.List;

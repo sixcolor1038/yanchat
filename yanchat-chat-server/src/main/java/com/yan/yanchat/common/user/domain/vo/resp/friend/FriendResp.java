@@ -1,4 +1,4 @@
-package com.yan.yanchat.common.user.domain.vo.resp;
+package com.yan.yanchat.common.user.domain.vo.resp.friend;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;

@@ -8,8 +8,9 @@ import com.yan.yanchat.common.infrastructure.domain.vo.resp.PageBaseResp;
 import com.yan.yanchat.common.infrastructure.utils.RequestHolder;
 import com.yan.yanchat.common.user.domain.vo.req.friend.FriendApplyReq;
 import com.yan.yanchat.common.user.domain.vo.req.friend.FriendDeleteReq;
-import com.yan.yanchat.common.user.domain.vo.resp.FriendResp;
+import com.yan.yanchat.common.user.domain.vo.resp.friend.FriendResp;
 import com.yan.yanchat.common.user.domain.vo.resp.friend.FriendApplyResp;
+import com.yan.yanchat.common.user.domain.vo.resp.friend.FriendUnreadResp;
 import com.yan.yanchat.common.user.service.FriendService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -50,8 +51,13 @@ public class FriendController {
     @GetMapping("/apply/page")
     @ApiOperation("好友申请列表")
     public ApiResult<PageBaseResp<FriendApplyResp>> page(@Valid PageBaseReq request) {
-        Long uid = RequestHolder.get().getUid();
         return ApiResult.success(friendService.pageApplyFriend(RequestHolder.get().getUid(), request));
+    }
+
+    @GetMapping("/apply/unread")
+    @ApiOperation("申请未读数")
+    public ApiResult<FriendUnreadResp> unread() {
+        return ApiResult.success(friendService.unread(RequestHolder.get().getUid()));
     }
 
     @DeleteMapping()

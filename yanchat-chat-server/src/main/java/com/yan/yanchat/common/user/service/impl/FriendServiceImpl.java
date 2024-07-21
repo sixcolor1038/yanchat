@@ -21,8 +21,9 @@ import com.yan.yanchat.common.user.domain.entity.UserFriend;
 import com.yan.yanchat.common.user.domain.enums.ApplyStatusEnum;
 import com.yan.yanchat.common.user.domain.vo.req.friend.FriendApplyReq;
 import com.yan.yanchat.common.user.domain.vo.req.friend.FriendApproveReq;
-import com.yan.yanchat.common.user.domain.vo.resp.FriendResp;
+import com.yan.yanchat.common.user.domain.vo.resp.friend.FriendResp;
 import com.yan.yanchat.common.user.domain.vo.resp.friend.FriendApplyResp;
+import com.yan.yanchat.common.user.domain.vo.resp.friend.FriendUnreadResp;
 import com.yan.yanchat.common.user.service.FriendService;
 import com.yan.yanchat.common.user.service.adapter.FriendAdapter;
 import lombok.extern.slf4j.Slf4j;
@@ -130,6 +131,11 @@ public class FriendServiceImpl implements FriendService {
         //返回消息
         return PageBaseResp.init(userApplyIPage, FriendAdapter.buildFriendApplyList(userApplyIPage.getRecords()));
 
+    }
+
+    @Override
+    public FriendUnreadResp unread(Long uid) {
+        return new FriendUnreadResp(userApplyDao.getUnReadCount(uid));
     }
 
     private void readApples(Long uid, IPage<UserApply> userApplyIPage) {

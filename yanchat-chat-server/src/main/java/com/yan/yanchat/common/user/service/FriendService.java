@@ -6,8 +6,9 @@ import com.yan.yanchat.common.infrastructure.domain.vo.resp.CursorPageBaseResp;
 import com.yan.yanchat.common.infrastructure.domain.vo.resp.PageBaseResp;
 import com.yan.yanchat.common.user.domain.vo.req.friend.FriendApplyReq;
 import com.yan.yanchat.common.user.domain.vo.req.friend.FriendApproveReq;
-import com.yan.yanchat.common.user.domain.vo.resp.FriendResp;
+import com.yan.yanchat.common.user.domain.vo.resp.friend.FriendResp;
 import com.yan.yanchat.common.user.domain.vo.resp.friend.FriendApplyResp;
+import com.yan.yanchat.common.user.domain.vo.resp.friend.FriendUnreadResp;
 
 /**
  * @Author: sixcolor
@@ -45,9 +46,17 @@ public interface FriendService {
     /**
      * 分页查询好友申请
      *
-     * @param uid 用户id
+     * @param uid     用户id
      * @param request 请求
      * @return
      */
     PageBaseResp<FriendApplyResp> pageApplyFriend(Long uid, PageBaseReq request);
+
+    /**
+     * 申请未读数
+     *
+     * @param uid 用户id
+     * @return
+     */
+    FriendUnreadResp unread(Long uid);
 }
