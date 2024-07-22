@@ -40,8 +40,7 @@ public class FriendController {
     @GetMapping("/page")
     @ApiOperation("联系人列表")
     public ApiResult<CursorPageBaseResp<FriendResp>> friendList(@Valid CursorPageBaseReq request) {
-        Long uid = RequestHolder.get().getUid();
-        return ApiResult.success(friendService.friendList(uid, request));
+        return ApiResult.success(friendService.friendList(RequestHolder.get().getUid(), request));
     }
 
     @PostMapping("apply")
@@ -73,16 +72,14 @@ public class FriendController {
     @DeleteMapping()
     @ApiOperation("删除好友")
     public ApiResult<Void> delete(@Valid @RequestBody FriendDeleteReq request) {
-        Long uid = RequestHolder.get().getUid();
-        friendService.deleteFriend(uid, request.getTargetUid());
+        friendService.deleteFriend(RequestHolder.get().getUid(), request.getTargetUid());
         return ApiResult.success();
     }
 
     @GetMapping("/check")
     @ApiOperation("批量判断是否是自己好友")
     public ApiResult<FriendCheckResp> check(@Valid FriendCheckReq request) {
-        Long uid = RequestHolder.get().getUid();
-        return ApiResult.success(friendService.check(uid, request));
+        return ApiResult.success(friendService.check(RequestHolder.get().getUid(), request));
     }
 
 }
