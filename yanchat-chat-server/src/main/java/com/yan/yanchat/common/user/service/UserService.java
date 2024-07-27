@@ -1,7 +1,7 @@
 package com.yan.yanchat.common.user.service;
 
 import com.yan.yanchat.common.user.domain.entity.User;
-import com.yan.yanchat.common.user.domain.vo.req.BlackReq;
+import com.yan.yanchat.common.user.domain.vo.req.user.BlackReq;
 import com.yan.yanchat.common.user.domain.vo.resp.BadgeResp;
 import com.yan.yanchat.common.user.domain.vo.resp.UserInfoResp;
 import org.springframework.stereotype.Service;

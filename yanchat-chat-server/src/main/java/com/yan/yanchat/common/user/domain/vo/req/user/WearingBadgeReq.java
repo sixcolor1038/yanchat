@@ -1,4 +1,4 @@
-package com.yan.yanchat.common.user.domain.vo.req;
+package com.yan.yanchat.common.user.domain.vo.req.user;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -17,10 +17,10 @@ import javax.validation.constraints.NotNull;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class BlackReq {
+public class WearingBadgeReq {
 
 
     @NotNull
-    @ApiModelProperty("拉黑用户的uid")
-    private Long uid;
+    @ApiModelProperty("徽章id")
+    private Long itemId;
 }

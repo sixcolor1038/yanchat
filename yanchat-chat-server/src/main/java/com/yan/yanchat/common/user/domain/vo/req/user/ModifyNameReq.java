@@ -1,4 +1,4 @@
-package com.yan.yanchat.common.user.domain.vo.req;
+package com.yan.yanchat.common.user.domain.vo.req.user;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;

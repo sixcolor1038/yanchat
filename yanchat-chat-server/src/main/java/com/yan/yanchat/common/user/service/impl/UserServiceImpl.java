@@ -11,7 +11,7 @@ import com.yan.yanchat.common.user.domain.entity.*;
 import com.yan.yanchat.common.user.domain.enums.BlackTypeEnum;
 import com.yan.yanchat.common.user.domain.enums.ItemEnum;
 import com.yan.yanchat.common.user.domain.enums.ItemTypeEnum;
-import com.yan.yanchat.common.user.domain.vo.req.BlackReq;
+import com.yan.yanchat.common.user.domain.vo.req.user.BlackReq;
 import com.yan.yanchat.common.user.domain.vo.resp.BadgeResp;
 import com.yan.yanchat.common.user.domain.vo.resp.UserInfoResp;
 import com.yan.yanchat.common.user.service.UserService;
