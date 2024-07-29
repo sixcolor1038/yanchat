@@ -4,6 +4,10 @@ import com.google.common.collect.Lists;
 import com.yan.yanchat.common.user.domain.entity.User;
 import com.yan.yanchat.common.user.domain.entity.UserApply;
 import com.yan.yanchat.common.user.domain.entity.UserFriend;
+import com.yan.yanchat.common.user.domain.enums.ApplyReadStatusEnum;
+import com.yan.yanchat.common.user.domain.enums.ApplyStatusEnum;
+import com.yan.yanchat.common.user.domain.enums.ApplyTypeEnum;
+import com.yan.yanchat.common.user.domain.vo.req.friend.FriendApplyReq;
 import com.yan.yanchat.common.user.domain.vo.resp.friend.FriendApplyResp;
 import com.yan.yanchat.common.user.domain.vo.resp.friend.FriendResp;
 
@@ -59,5 +63,16 @@ public class FriendAdapter {
         userFriend2.setUid(targetUid);
         userFriend2.setFriendUid(uid);
         return Lists.newArrayList(userFriend1, userFriend2);
+    }
+
+    public static UserApply buildFriendApply(Long uid, FriendApplyReq req) {
+        UserApply userApplyNew = new UserApply();
+        userApplyNew.setUid(uid);
+        userApplyNew.setMsg(req.getMsg());
+        userApplyNew.setType(ApplyTypeEnum.ADD_FRIEND.getCode());
+        userApplyNew.setTargetId(req.getTargetUid());
+        userApplyNew.setStatus(ApplyStatusEnum.WAIT_APPROVAL.getCode());
+        userApplyNew.setReadStatus(ApplyReadStatusEnum.UNREAD.getCode());
+        return userApplyNew;
     }
 }

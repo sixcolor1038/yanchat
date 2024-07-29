@@ -2,15 +2,16 @@ package com.yan.yanchat.common.user.service.impl;
 
 import cn.hutool.core.collection.CollectionUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.google.common.collect.Lists;
 import com.yan.yanchat.common.chat.domain.entity.RoomFriend;
 import com.yan.yanchat.common.chat.service.ChatService;
 import com.yan.yanchat.common.chat.service.RoomService;
 import com.yan.yanchat.common.chat.service.adapter.MessageAdapter;
+import com.yan.yanchat.common.infrastructure.annotation.RedissonLock;
 import com.yan.yanchat.common.infrastructure.domain.vo.req.CursorPageBaseReq;
 import com.yan.yanchat.common.infrastructure.domain.vo.req.PageBaseReq;
 import com.yan.yanchat.common.infrastructure.domain.vo.resp.CursorPageBaseResp;
 import com.yan.yanchat.common.infrastructure.domain.vo.resp.PageBaseResp;
+import com.yan.yanchat.common.infrastructure.event.UserApplyEvent;
 import com.yan.yanchat.common.infrastructure.utils.AssertUtil;
 import com.yan.yanchat.common.user.dao.UserApplyDao;
 import com.yan.yanchat.common.user.dao.UserDao;
@@ -31,10 +32,15 @@ import com.yan.yanchat.common.user.service.adapter.FriendAdapter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -55,6 +61,8 @@ public class FriendServiceImpl implements FriendService {
     private ChatService chatService;
     @Autowired
     private UserDao userDao;
+    @Autowired
+    private ApplicationEventPublisher applicationEventPublisher;
 
     @Override
     public void apply(Long uid, FriendApplyReq req) {
@@ -73,10 +81,15 @@ public class FriendServiceImpl implements FriendService {
             ((FriendService) AopContext.currentProxy()).applyApprove(uid, new FriendApproveReq(friendApproving.getId()));
             return;
         }
-
+        UserApply insert = FriendAdapter.buildFriendApply(uid, req);
+        userApplyDao.save(insert);
+        //申请事件
+        applicationEventPublisher.publishEvent(new UserApplyEvent(this, insert));
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
+    @RedissonLock(key = "#uid")
     public void applyApprove(Long uid, FriendApproveReq request) {
         UserApply userApply = userApplyDao.getById(request.getApplyId());
         AssertUtil.isNotEmpty(userApply, "不存在申请记录");
