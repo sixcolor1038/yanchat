@@ -49,7 +49,7 @@ public class UserCache {
     }
 
     @CacheEvict(cacheNames = "user", key = "'blackList'")
-    public Map<Integer, Set<String>> evictBlackMap() {
+    public Map<Integer, Set<String>>  evictBlackMap() {
         return null;
     }
 }

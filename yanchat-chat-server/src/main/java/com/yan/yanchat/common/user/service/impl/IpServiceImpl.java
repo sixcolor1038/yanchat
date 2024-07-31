@@ -98,7 +98,7 @@ public class IpServiceImpl implements IpService {
                 IpDetail ipDetail = tryGetIpDetailOrNullTreeTimes("117.85.133.4");
                 if (Objects.nonNull(ipDetail)) {
                     Date date = new Date();
-                    System.out.println(String.format("第%d次成功，目前耗时%dms", finalI, date.getTime() - begin.getTime()));
+                    System.out.printf("第%d次成功，目前耗时%dms%n", finalI, date.getTime() - begin.getTime());
                 }
             });
         }
