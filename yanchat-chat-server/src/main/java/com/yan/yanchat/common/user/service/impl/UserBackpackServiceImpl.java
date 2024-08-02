@@ -1,7 +1,7 @@
 package com.yan.yanchat.common.user.service.impl;
 
 import com.yan.yanchat.common.infrastructure.annotation.RedissonLock;
-import com.yan.yanchat.common.infrastructure.domain.enums.BaseEnum;
+import com.yan.yanchat.common.infrastructure.domain.enums.YesOrNoEnum;
 import com.yan.yanchat.common.infrastructure.service.LockService;
 import com.yan.yanchat.common.user.dao.UserBackpackDao;
 import com.yan.yanchat.common.user.domain.entity.UserBackpack;
@@ -50,7 +50,7 @@ public class UserBackpackServiceImpl implements UserBackpackService {
         UserBackpack insert = UserBackpack.builder()
                 .uid(uid)
                 .itemId(itemId)
-                .status(BaseEnum.NO.getStatus())
+                .status(YesOrNoEnum.NO.getStatus())
                 .idempotent(idempotent)
                 .build();
         userBackpackDao.save(insert);
