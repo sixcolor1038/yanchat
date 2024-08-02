@@ -1,6 +1,6 @@
 package com.yan.yanchat.common.websocket.service.adapter;
 
-import com.yan.yanchat.common.infrastructure.domain.enums.BaseEnum;
+import com.yan.yanchat.common.infrastructure.domain.enums.YesOrNoEnum;
 import com.yan.yanchat.common.user.domain.entity.User;
 import com.yan.yanchat.common.websocket.domain.enums.WSRespTypeEnum;
 import com.yan.yanchat.common.websocket.domain.vo.resp.WSBaseResp;
@@ -35,7 +35,7 @@ public class WebSocketAdapter {
                 .name(user.getName())
                 .token(token)
                 .uid(user.getId())
-                .power(power ? BaseEnum.YES.getStatus() : BaseEnum.NO.getStatus())
+                .power(power ? YesOrNoEnum.YES.getStatus() : YesOrNoEnum.NO.getStatus())
                 .build();
         resp.setData(build);
         return resp;
