@@ -72,7 +72,7 @@ public class TextMsgHandler extends AbstractMsgHandler<TextMsgReq> {
             AssertUtil.equal((long)atUidList.size(), batchCount, "@用户不存在");
             boolean atAll = body.getAtUidList().contains(0L);
             if (atAll) {
-                AssertUtil.isTrue(RoleService.hasPower(uid, RoleEnum.CHAT_MANAGEG), "没有权限");
+                AssertUtil.isTrue(RoleService.hasPower(uid, RoleEnum.CHAT_MANAGER), "没有权限");
             }
         }
     }

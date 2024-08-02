@@ -146,7 +146,7 @@ public class WebSocketServiceImpl implements WebSocketService {
         WSChannelExtraDTO wsChannelExtraDTO = ONLINE_WS_MAP.get(channel);
         wsChannelExtraDTO.setUid(user.getId());
         //推送登录成功消息
-        sendMsg(channel, WebSocketAdapter.buildResp(user, token, roleService.hasPower(user.getId(),RoleEnum.CHAT_MANAGEG)));
+        sendMsg(channel, WebSocketAdapter.buildResp(user, token, roleService.hasPower(user.getId(),RoleEnum.CHAT_MANAGER)));
         //发布用户上线成功事件
         user.setLastOptTime(new Date());
         user.refreshIp(NettyUtil.getAttr(channel, NettyUtil.IP));
