@@ -1,7 +1,7 @@
 package com.yan.yanchat.common.user.service.adapter;
 
 import cn.hutool.core.bean.BeanUtil;
-import com.yan.yanchat.common.infrastructure.domain.enums.BaseEnum;
+import com.yan.yanchat.common.infrastructure.domain.enums.YesOrNoEnum;
 import com.yan.yanchat.common.user.domain.entity.ItemConfig;
 import com.yan.yanchat.common.user.domain.entity.User;
 import com.yan.yanchat.common.user.domain.entity.UserBackpack;
@@ -45,8 +45,8 @@ public class UserAdapter {
         return itemConfigs.stream().map(x -> {
                     BadgeResp resp = new BadgeResp();
                     BeanUtil.copyProperties(x, resp);
-                    resp.setObtain(obtainItemSet.contains(x.getId()) ? BaseEnum.YES.getStatus() : BaseEnum.NO.getStatus());
-                    resp.setWearing(Objects.equals(x.getId(), user.getItemId()) ? BaseEnum.YES.getStatus() : BaseEnum.NO.getStatus());
+                    resp.setObtain(obtainItemSet.contains(x.getId()) ? YesOrNoEnum.YES.getStatus() : YesOrNoEnum.NO.getStatus());
+                    resp.setWearing(Objects.equals(x.getId(), user.getItemId()) ? YesOrNoEnum.YES.getStatus() : YesOrNoEnum.NO.getStatus());
                     return resp;
                 }).sorted(Comparator.comparing(BadgeResp::getWearing, Comparator.reverseOrder())
                         .thenComparing(BadgeResp::getObtain, Comparator.reverseOrder()))
