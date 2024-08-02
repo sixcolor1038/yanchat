@@ -12,6 +12,9 @@ import com.yan.yanchat.common.chat.domain.vo.req.TextMsgReq;
  * @Description:
  */
 public class MessageAdapter {
+
+    public static final int CAN_CALLBACK_GAP_COUNT = 100;
+
     public static Message buildMsgSave(ChatMessageReq request, Long uid) {
         return Message.builder()
                 .fromUid(uid)
