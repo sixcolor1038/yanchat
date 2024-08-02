@@ -1,7 +1,7 @@
 package com.yan.yanchat.common.user.dao;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.yan.yanchat.common.infrastructure.domain.enums.BaseEnum;
+import com.yan.yanchat.common.infrastructure.domain.enums.YesOrNoEnum;
 import com.yan.yanchat.common.user.domain.entity.UserBackpack;
 import com.yan.yanchat.common.user.mapper.UserBackpackMapper;
 import org.springframework.stereotype.Service;
@@ -19,14 +19,14 @@ public class UserBackpackDao extends ServiceImpl<UserBackpackMapper, UserBackpac
     public Integer getCountByValidItemId(Long uid, Long itemId) {
         return lambdaQuery().eq(UserBackpack::getUid, uid)
                 .eq(UserBackpack::getItemId, itemId)
-                .eq(UserBackpack::getStatus, BaseEnum.NO.getStatus())
+                .eq(UserBackpack::getStatus, YesOrNoEnum.NO.getStatus())
                 .count();
     }
 
     public UserBackpack getFirstValidItem(Long uid, Long itemId) {
         return lambdaQuery().eq(UserBackpack::getUid, uid)
                 .eq(UserBackpack::getItemId, itemId)
-                .eq(UserBackpack::getStatus, BaseEnum.NO.getStatus())
+                .eq(UserBackpack::getStatus, YesOrNoEnum.NO.getStatus())
                 .orderByAsc(UserBackpack::getId)
                 .last("limit 1")
                 .one();
@@ -34,8 +34,8 @@ public class UserBackpackDao extends ServiceImpl<UserBackpackMapper, UserBackpac
 
     public boolean useItem(UserBackpack item) {
         return lambdaUpdate().eq(UserBackpack::getId, item.getId())
-                .eq(UserBackpack::getStatus, BaseEnum.NO.getStatus())
-                .set(UserBackpack::getStatus, BaseEnum.YES.getStatus())
+                .eq(UserBackpack::getStatus, YesOrNoEnum.NO.getStatus())
+                .set(UserBackpack::getStatus, YesOrNoEnum.YES.getStatus())
                 .update();
 
 
@@ -43,7 +43,7 @@ public class UserBackpackDao extends ServiceImpl<UserBackpackMapper, UserBackpac
 
     public List<UserBackpack> getByItemIds(Long uid, List<Long> itemId) {
         return lambdaQuery().eq(UserBackpack::getUid, uid)
-                .eq(UserBackpack::getStatus, BaseEnum.NO.getStatus())
+                .eq(UserBackpack::getStatus, YesOrNoEnum.NO.getStatus())
                 .in(UserBackpack::getItemId, itemId)
                 .list();
     }
