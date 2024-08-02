@@ -14,6 +14,11 @@ public class RedisConstant {
     public static final String USER_TOKEN_STR = "usertoken:uid_%d";
 
     /**
+     * 用户信息
+     */
+    public static final String USER_INFO_STRING = "userInfo:uid_%d";
+
+    /**
      * 房间详情
      */
     public static final String ROOM_INFO_STRING = "roomInfo:roomId_%d";
