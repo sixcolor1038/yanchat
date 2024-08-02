@@ -1,7 +1,7 @@
 package com.yan.yanchat.common.user.dao;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.yan.yanchat.common.infrastructure.domain.enums.BaseEnum;
+import com.yan.yanchat.common.infrastructure.domain.enums.YesOrNoEnum;
 import com.yan.yanchat.common.user.domain.entity.User;
 import com.yan.yanchat.common.user.mapper.UserMapper;
 import org.springframework.stereotype.Service;
@@ -42,7 +42,7 @@ public class UserDao extends ServiceImpl<UserMapper, User> {
     public void invalidUid(Long uid) {
         lambdaUpdate()
                 .eq(User::getId, uid)
-                .set(User::getStatus, BaseEnum.YES.getStatus())
+                .set(User::getStatus, YesOrNoEnum.YES.getStatus())
                 .update();
     }
 
