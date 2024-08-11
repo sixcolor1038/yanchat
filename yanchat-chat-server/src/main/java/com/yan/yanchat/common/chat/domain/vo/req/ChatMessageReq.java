@@ -26,6 +26,9 @@ public class ChatMessageReq {
     @NotNull
     private Integer msgType;
 
+    /**
+     * @see com.yan.yanchat.common.chat.domain.entity.msg
+     */
     @ApiModelProperty("消息内容，类型不同传值不同")
     @NotNull
     private Object body;

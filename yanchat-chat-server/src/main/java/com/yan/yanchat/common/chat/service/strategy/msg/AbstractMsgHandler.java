@@ -43,6 +43,7 @@ public abstract class AbstractMsgHandler<Req> {
     public Long checkAndSaveMsg(ChatMessageReq request, Long uid) {
         Req body = this.toBean(request.getBody());
         //统一校验
+        //todo 这里校验有问题，未打印出具体报错信息 例子：发送音频信息size为null时
         AssertUtil.allCheckValidateThrow(body);
         //子类扩展校验
         checkMsg(body, request.getRoomId(), uid);
