@@ -5,7 +5,7 @@ package com.yan.yanchat.common.infrastructure.constant;
  * @Date: 2024-02-15
  * @Description: redis常量
  */
-public class RedisConstant {
+public class RedisKey {
 
     private static final String BASE_KEY = "yanchat::chat";
     /**

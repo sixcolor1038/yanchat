@@ -1,7 +1,7 @@
 package com.yan.yanchat.common.user.service.cache;
 
 
-import com.yan.yanchat.common.infrastructure.constant.RedisConstant;
+import com.yan.yanchat.common.infrastructure.constant.RedisKey;
 import com.yan.yanchat.common.infrastructure.service.cache.AbstractRedisStringCache;
 import com.yan.yanchat.common.user.dao.UserDao;
 import com.yan.yanchat.common.user.domain.entity.User;
@@ -25,7 +25,7 @@ public class UserInfoCache extends AbstractRedisStringCache<Long, User> {
 
     @Override
     protected String getKey(Long uid) {
-        return RedisConstant.getKey(RedisConstant.USER_INFO_STRING, uid);
+        return RedisKey.getKey(RedisKey.USER_INFO_STRING, uid);
     }
 
     @Override

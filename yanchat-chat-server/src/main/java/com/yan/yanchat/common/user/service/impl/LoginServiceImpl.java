@@ -1,6 +1,6 @@
 package com.yan.yanchat.common.user.service.impl;
 
-import com.yan.yanchat.common.infrastructure.constant.RedisConstant;
+import com.yan.yanchat.common.infrastructure.constant.RedisKey;
 import com.yan.yanchat.common.infrastructure.utils.JWTUtils;
 import com.yan.yanchat.common.infrastructure.utils.RedisUtils;
 import com.yan.yanchat.common.user.service.LoginService;
@@ -61,6 +61,6 @@ public class LoginServiceImpl implements LoginService {
     }
 
     private String getUserTokenKey(Long uid) {
-        return RedisConstant.getKey(RedisConstant.USER_TOKEN_STR, uid);
+        return RedisKey.getKey(RedisKey.USER_TOKEN_STR, uid);
     }
 }

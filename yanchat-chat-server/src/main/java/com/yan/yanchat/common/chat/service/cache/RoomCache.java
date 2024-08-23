@@ -3,7 +3,7 @@ package com.yan.yanchat.common.chat.service.cache;
 import com.yan.yanchat.common.chat.dao.RoomDao;
 import com.yan.yanchat.common.chat.dao.RoomFriendDao;
 import com.yan.yanchat.common.chat.domain.entity.Room;
-import com.yan.yanchat.common.infrastructure.constant.RedisConstant;
+import com.yan.yanchat.common.infrastructure.constant.RedisKey;
 import com.yan.yanchat.common.infrastructure.service.cache.AbstractRedisStringCache;
 import com.yan.yanchat.common.user.dao.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +30,7 @@ public class RoomCache extends AbstractRedisStringCache<Long, Room> {
 
     @Override
     protected String getKey(Long roomId) {
-        return RedisConstant.getKey(RedisConstant.ROOM_INFO_STRING, roomId);
+        return RedisKey.getKey(RedisKey.ROOM_INFO_STRING, roomId);
     }
 
     @Override

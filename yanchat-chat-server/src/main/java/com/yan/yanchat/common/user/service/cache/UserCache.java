@@ -1,7 +1,7 @@
 package com.yan.yanchat.common.user.service.cache;
 
 import cn.hutool.core.collection.CollUtil;
-import com.yan.yanchat.common.infrastructure.constant.RedisConstant;
+import com.yan.yanchat.common.infrastructure.constant.RedisKey;
 import com.yan.yanchat.common.infrastructure.utils.RedisUtils;
 import com.yan.yanchat.common.user.dao.BlackDao;
 import com.yan.yanchat.common.user.dao.UserDao;
@@ -70,7 +70,7 @@ public class UserCache {
      */
     public Map<Long, User> getUserInfoBatch(Set<Long> uids) {
         //批量组装key
-        List<String> keys = uids.stream().map(a -> RedisConstant.getKey(RedisConstant.USER_INFO_STRING, a)).collect(Collectors.toList());
+        List<String> keys = uids.stream().map(a -> RedisKey.getKey(RedisKey.USER_INFO_STRING, a)).collect(Collectors.toList());
         //批量get
         List<User> mget = RedisUtils.mget(keys, User.class);
         Map<Long, User> map = mget.stream().filter(Objects::nonNull).collect(Collectors.toMap(User::getId, Function.identity()));
@@ -81,7 +81,7 @@ public class UserCache {
             List<User> needLoadUserList = userDao.listByIds(needLoadUidList);
             Map<String, User> redisMap = needLoadUserList.stream()
                     .collect(Collectors
-                            .toMap(a -> RedisConstant.getKey(RedisConstant.USER_INFO_STRING, a.getId()), Function.identity()));
+                            .toMap(a -> RedisKey.getKey(RedisKey.USER_INFO_STRING, a.getId()), Function.identity()));
             RedisUtils.mset(redisMap, 5 * 60);
             //加载回redis
             map.putAll(needLoadUserList.stream().collect(Collectors.toMap(User::getId, Function.identity())));
